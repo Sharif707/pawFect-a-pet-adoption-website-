@@ -28,7 +28,7 @@ const Footer = () => {
               <li><a href="#" class="hover:underline">Fundraise</a></li>
               <li><a href="#" class="hover:underline">Gift Cards</a></li>
               <li><a href="#" class="hover:underline">Bequests</a></li>
-              <li><a href="#" class="hover:underline">The PetRescue Bookshop</a></li>
+              <li><a href="#" class="hover:underline">The PawFect Bookshop</a></li>
               <li><a href="#" class="hover:underline">Become a food donation collaborator</a></li>
            
             </ul>

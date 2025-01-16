@@ -1,8 +1,16 @@
-import MenuBar from "@/Components/ShadCn/MenuBar/MenuBar";
+import NavSlider from "@/Components/NavSlider/NavSlider";
+
 import { Button } from "@/Components/ui/button";
+import { useState } from "react";
+import { MdOutlineMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div className="bg-[#fcfcfc] shadow text-[#0b0b0b]">
       {/* Desktop Navbar */}
@@ -52,8 +60,13 @@ const Navbar = () => {
         </div>
 
         {/* Dropdown Button */}
-        <MenuBar />
+        <MdOutlineMenu
+          className="w-8 h-auto cursor-pointer"
+          onClick={handleMenuToggle}
+        />
+       
       </div>
+      <NavSlider isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
