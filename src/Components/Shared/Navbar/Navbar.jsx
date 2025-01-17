@@ -10,9 +10,10 @@ const Navbar = () => {
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
+
   };
   return (
-    <div className="bg-[#fcfcfc] shadow text-[#0b0b0b]">
+    <div className="bg-[#fcfcfc] shadow text-[#0b0b0b] ">
       {/* Desktop Navbar */}
       <div className="hidden sm:flex justify-between items-center px-8 py-4">
         {/* Logo Section */}
@@ -60,11 +61,15 @@ const Navbar = () => {
         </div>
 
         {/* Dropdown Button */}
-        <MdOutlineMenu
-          className="w-8 h-auto cursor-pointer"
-          onClick={handleMenuToggle}
-        />
-       
+        <div className="space-x-2 flex ">
+          <Button className=" bg-[#eac435] text-[#333333] transition-colors hover:bg-[#eac445] py-2 px-5 rounded-lg font-bold text-lg uppercase">
+            Donate
+          </Button>
+          <MdOutlineMenu
+            className="w-8 h-auto cursor-pointer"
+            onClick={handleMenuToggle}
+          />
+        </div>
       </div>
       <NavSlider isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
