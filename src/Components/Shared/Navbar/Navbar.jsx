@@ -1,17 +1,17 @@
-import NavSlider from "@/Components/NavSlider/NavSlider";
-
-import { Button } from "@/Components/ui/button";
 import { useState } from "react";
 import { MdOutlineMenu } from "react-icons/md";
 import { Link } from "react-router-dom";
+import NavSlider from "../../NavSlider/NavSlider";
+import useAuth from "../../../Hooks/useAuth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleMenuToggle = () => {
     setIsOpen(!isOpen);
-
   };
+  const { user } = useAuth();
+  console.log("user from navbar", user);
   return (
     <div className="bg-[#fcfcfc] shadow text-[#0b0b0b] ">
       {/* Desktop Navbar */}
@@ -38,14 +38,21 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* Buttons (Login/Signup) */}
+     
         <div className="flex space-x-4">
-          <Button className="bg-transparent py-2 px-4 rounded-lg text-[#0b0b0b] hover:text-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1">
-            <Link to="/login">Login</Link>
-          </Button>
-          <Button className="bg-[#efefef] py-2 px-4 rounded-lg text-[#0b0b0b] shadow-custom-gray hover:bg-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1">
-            <Link to="/signup">Sign Up</Link>
-          </Button>
+          <Link
+            className="bg-transparent py-2 px-4 rounded-lg text-[#0b0b0b] hover:text-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1"
+            to="/login"
+          >
+            Login
+          </Link>
+
+          <Link
+            className="bg-[#efefef] py-2 px-4 rounded-lg text-[#0b0b0b] shadow-custom-gray hover:bg-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1"
+            to={'/signup'}
+          >
+            Sign Up
+          </Link>
         </div>
       </div>
 
@@ -60,11 +67,11 @@ const Navbar = () => {
           />
         </div>
 
-        {/* Dropdown Button */}
+        
         <div className="space-x-2 flex ">
-          <Button className=" bg-[#eac435] text-[#333333] transition-colors hover:bg-[#eac445] py-2 px-5 rounded-lg font-bold text-lg uppercase">
+          <Link className=" bg-[#eac435] text-[#333333] transition-colors hover:bg-[#eac445] py-2 px-5 rounded-lg font-bold text-lg uppercase">
             Donate
-          </Button>
+          </Link>
           <MdOutlineMenu
             className="w-8 h-auto cursor-pointer"
             onClick={handleMenuToggle}

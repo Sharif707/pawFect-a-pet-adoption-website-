@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "./Banner.css"; // For custom styles
@@ -11,8 +11,12 @@ import banner1 from "../../assets/banner-1.jpg";
 import banner2 from "../../assets/banner-2.jpg";
 import banner3 from "../../assets/banner-3.jpg";
 import banner4 from "../../assets/banner-4.avif";
+import useAuth from "../../Hooks/useAuth";
+
 
 const Banner = () => {
+  const { user } = useAuth();
+  console.log("user", user);
   const sliderData = [
     {
       image: banner1,
