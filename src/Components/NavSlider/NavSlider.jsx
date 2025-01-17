@@ -1,133 +1,175 @@
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
 import { MdClose } from "react-icons/md";
-import { Button } from "@/Components/ui/button";
 import { Link } from "react-router-dom";
 
 const NavSlider = ({ isOpen, setIsOpen }) => {
+  const handleStateChange = (state) => {
+    setIsOpen(state.isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   const styles = {
     bmBurgerButton: {
-      position: 'fixed',
-      width: '36px',
-      height: '30px',
-      right: '36px',
-      top: '36px'
-    },
-   
-    bmBurgerBarsHover: {
-      background: '#a90000'
+      display: "none",
     },
     bmCrossButton: {
-      height: '24px',
-      width: '24px',
-      right: '36px',
-      top: '36px'
-    },
-    bmCross: {
-      background: '#bdc3c7'
+      display: "none",
     },
     bmMenuWrap: {
-      position: 'fixed',
-      width: '100%', // Makes menu full width
-      height: '100%' // Makes menu full height
+      position: "fixed",
+      height: "100%",
+      width: "100%",
+      top: "0px",
     },
     bmMenu: {
-      background: '#373a47',
-      padding: '2.5em 1.5em 0',
-      fontSize: '1.15em',
-      width: '100%' // Ensures content spans full width
-    },
-    bmMorphShape: {
-      fill: '#373a47'
+      background: "#2c2c2c",
+      padding: "2.5em 1.5em 0",
+      fontSize: "1.15em",
     },
     bmItemList: {
-      color: '#b8b7ad',
-      padding: '0.8em',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%'
+      height: "100%",
     },
     bmItem: {
-      display: 'inline-block',
-      margin: '1em 0',
-      color: 'white',
-      textDecoration: 'none',
-      fontSize: '24px'
+      display: "inline-block",
     },
     bmOverlay: {
-      background: 'rgba(0, 0, 0, 0.3)'
-    }
+      background: "rgba(0, 0, 0, 0.3)",
+    },
   };
-  return (
-    <Menu
-      right
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
-      pageWrapId={'page-wrap'}
-      outerContainerId={'outer-container'}
-      styles={styles}
-    >
-      <div className="absolute top-0 left-0 w-screen h-screen bg-[#2c2c2c] p-6 z-50">
-        {/* Close Button */}
-        <MdClose
-          className="text-[#ffffff] text-2xl absolute top-4 right-4 cursor-pointer"
-          onClick={() => setIsOpen(false)}
-        />
 
-        {/* User Section */}
-        <div className="text-center py-6">
-          <img
-            src="/src/assets/cat-profile.png"
-            alt="Profile"
-            className="w-20 h-20 rounded-full mx-auto"
-          />
-          <h2 className="text-2xl font-bold my-2 text-[#ffffff]">
-            Hello, friend!
-          </h2>
-          <div className="flex justify-center space-x-4 mt-4">
-            <Button className="bg-[#ffffff] py-1 px-2 rounded-lg text-[#2c2c2c] shadow-md hover:bg-gray-200 font-bold text-md transform transition-transform duration-300 hover:-translate-y-1">
-              <Link to="/signup">Sign Up</Link>
-            </Button>
-            <Button className="bg-transparent border-2 border-[#ffffff] py-1 px-2 rounded-lg text-[#ffffff] hover:text-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1">
-              <Link to="/login">Login</Link>
-            </Button>
+  return (
+    <div className="sm:hidden">
+      <Menu
+        right
+        isOpen={isOpen}
+        onStateChange={handleStateChange}
+        styles={styles}
+        width={"100%"}
+        pageWrapId="page-wrap"
+        outerContainerId="outer-container"
+      >
+        <div className="flex flex-col h-full relative p-4">
+          {/* Close Button */}
+          <button
+            onClick={closeMenu}
+            className="absolute top-4 right-4 text-white hover:text-[#eac435] transition-colors"
+            aria-label="Close Menu"
+          >
+            <MdClose className="text-2xl" />
+          </button>
+
+          {/* Main Navigation */}
+          <div className="mt-8">
+            <Link
+              to="/"
+              className="text-white font-bold text-xl block py-2 hover:text-[#eac435] relative group transition-colors"
+              onClick={closeMenu}
+            >
+              Home
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link
+              to="/pet-listing"
+              className="text-white font-bold text-xl block py-2 hover:text-[#eac435] relative group transition-colors"
+              onClick={closeMenu}
+            >
+              Pet Listing
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+            <Link
+              to="/donation-campaigns"
+              className="text-white font-bold text-xl block py-2 hover:text-[#eac435] relative group transition-colors"
+              onClick={closeMenu}
+            >
+              Donation Campaigns
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+          </div>
+
+          {/* Pet Browse Section */}
+          <div className="border-t border-gray-600 pt-6 text-white mt-6">
+            <h3 className="text-lg font-bold text-[#eac435]">
+              Find pets to foster or adopt
+            </h3>
+            <ul className="space-y-4 mt-4">
+              <li>
+                <Link
+                  to="/browse/dogs"
+                  className="flex items-center space-x-4 py-2 hover:bg-[#444444] rounded-lg px-2 relative group transition-colors"
+                  onClick={closeMenu}
+                >
+                  <img
+                    src="/src/assets/dog-icon.png"
+                    alt="Dogs"
+                    className="w-8 h-8"
+                  />
+                  <span className="text-white hover:text-[#eac435] relative">
+                    Browse for dogs and puppies
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/browse/cats"
+                  className="flex items-center space-x-4 py-2 hover:bg-[#444444] rounded-lg px-2 relative group transition-colors"
+                  onClick={closeMenu}
+                >
+                  <img
+                    src="/src/assets/cat-icon.png"
+                    alt="Cats"
+                    className="w-8 h-8"
+                  />
+                  <span className="text-white hover:text-[#eac435] relative">
+                    Browse for cats and kittens
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/browse/other"
+                  className="flex items-center space-x-4 py-2 hover:bg-[#444444] rounded-lg px-2 relative group transition-colors"
+                  onClick={closeMenu}
+                >
+                  <img
+                    src="/src/assets/rabbit-icon.png"
+                    alt="Other Pets"
+                    className="w-8 h-8"
+                  />
+                  <span className="text-white hover:text-[#eac435] relative">
+                    Browse for other pets
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 group-hover:w-full transition-all duration-300"></span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Auth Buttons */}
+          <div className="flex flex-col gap-4 mt-8 border-t border-gray-600 pt-6">
+            <Link
+              to="/login"
+              className="bg-transparent py-2 px-4 rounded-lg text-white border border-[#eac435] hover:bg-[#eac435] hover:text-[#333333] font-bold text-lg text-center transition-colors"
+              onClick={closeMenu}
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              className="bg-[#eac435] py-2 px-4 rounded-lg text-[#333333] shadow-custom-gray hover:bg-[#eac445] font-bold text-lg text-center transition-colors"
+              onClick={closeMenu}
+            >
+              Sign Up
+            </Link>
           </div>
         </div>
-
-        {/* Menu Items */}
-        <div className="mt-6 text-[#ffffff]">
-          <h3 className="text-lg font-bold">Find pets to foster or adopt</h3>
-          <ul className="space-y-4 mt-4">
-            <li className="flex items-center space-x-4">
-              <img
-                src="/src/assets/dog-icon.png"
-                alt="Dogs"
-                className="w-8 h-8"
-              />
-              <span>Browse for dogs and puppies</span>
-            </li>
-            <li className="flex items-center space-x-4">
-              <img
-                src="/src/assets/cat-icon.png"
-                alt="Cats"
-                className="w-8 h-8"
-              />
-              <span>Browse for cats and kittens</span>
-            </li>
-            <li className="flex items-center space-x-4">
-              <img
-                src="/src/assets/rabbit-icon.png"
-                alt="Other Pets"
-                className="w-8 h-8"
-              />
-              <span>Browse for other pets</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </Menu>
+      </Menu>
+    </div>
   );
 };
 
