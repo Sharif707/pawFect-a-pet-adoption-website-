@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  FaFacebook,
-  FaGoogle,
-  FaApple,
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
-import useAuth from "../../../Hooks/useAuth";
+
 import toast from "react-hot-toast";
 
 import { TbFidgetSpinner } from "react-icons/tb";
-import { uploadImageToImageBB } from "../../Utils/UploadImage";
+import useAuth from "../../Hooks/useAuth";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import {
+  FaFacebook,
+  FaGoogle,
 
-const SignUp = () => {
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
+
+
+const Login = () => {
   const { setUser, createUser, setError, error } = useAuth();
   const {
     register,
@@ -26,29 +27,21 @@ const SignUp = () => {
     setisPasswordVisible(!isPasswordVisible);
   };
   const [loading, setLoading] = useState(false);
-
   const onSubmit = async (data) => {
     setLoading(true);
     console.log(data);
     try {
-      const {name, email, password } = data;
-      const imageFile = data.image[0];
-    
-      const imageURL = await uploadImageToImageBB(imageFile);
-      // if (!imageURL) {
-      //   toast.error("Image upload failed. Please try again.");
-      //   return;
-      // }
+      const { name, email, password } = data;
+
       const { user } = await createUser(email, password);
       setUser(user);
       setError({});
       const userInfo = {
         ...data,
         role: "user",
-        image: imageURL,
       };
 
-      toast.success("Signed up successful");
+      toast.success("Log in successful");
     } catch (error) {
       console.error("Error occurred", error.message);
       setError({ ...error, registerError: error?.message });
@@ -61,7 +54,7 @@ const SignUp = () => {
     <div className="md:w-1/2 mx-auto bg-white flex flex-col justify-center items-center p-8">
       <h1 className="text-3xl font-bold mb-2">PawFect</h1>
       <p className="text-gray-600 mb-4">Start your journey</p>
-      <h2 className="text-2xl font-semibold mb-6">Sign Up to PawFect</h2>
+      <h2 className="text-2xl font-semibold mb-6">Sign In to PawFect</h2>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -78,20 +71,6 @@ const SignUp = () => {
           />
           {errors.name && (
             <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
-        <div>
-          <input
-            type="file"
-            {...register("image", { required: "User Photo is required" })}
-            placeholder="Your Image"
-            className={`w-full px-4 py-2 border ${
-              errors.image ? "border-red-500" : "border-gray-300"
-            } rounded focus:outline-none`}
-            accept="image/*"
-          />
-          {errors.image && (
-            <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
           )}
         </div>
 
@@ -186,20 +165,18 @@ const SignUp = () => {
         <button className="bg-gray-100 p-3 rounded-full text-red-500">
           <FaGoogle size={20} />
         </button>
-        <button className="bg-gray-100 p-3 rounded-full text-black">
-          <FaApple size={20} />
-        </button>
+      
       </div>
 
       {/* Login Link */}
       <p className="text-gray-600 mt-6">
-        Have an account?{" "}
+       Don't Have an account?{" "}
         <a href="/login" className="text-blue-500 hover:underline">
-          Sign in
+          Register
         </a>
       </p>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;

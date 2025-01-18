@@ -21,6 +21,7 @@ const AuthProvider = ({ children }) => {
   console.log(user);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState({})
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -43,6 +44,13 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  const updateUserProfile = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    })
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       console.log("currentuser from auth", currentUser);
@@ -55,6 +63,7 @@ const AuthProvider = ({ children }) => {
         // );
       } else {
         setUser(currentUser);
+
 
         // const { data } = await axios.get(
         //   `${import.meta.env.VITE_API_URL}/clear-cookies`,
@@ -72,13 +81,16 @@ const AuthProvider = ({ children }) => {
     loginUser,
     signInwithGoogle,
     logOut,
+    updateUserProfile,
     user,
     setUser,
     setLoading,
+    error,
+    setError
   };
-  if (loading) {
-    return <LoadingSpinner count={5} width="80%" height={30} />;
-  }
+  // if (loading) {
+  //   return <LoadingSpinner count={5} width="80%" height={30} />;
+  // }
 
   return (
     <AuthContext.Provider value={AuthInfo}>{children}</AuthContext.Provider>
