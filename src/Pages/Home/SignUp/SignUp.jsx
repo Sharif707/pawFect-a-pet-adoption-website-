@@ -52,6 +52,7 @@ const SignUp = () => {
     try {
       const { name, email, password } = data;
       const imageFile = data.image[0];
+      console.log(imageFile);
 
       const imageURL = await uploadImageToImageBB(imageFile);
 
@@ -64,8 +65,8 @@ const SignUp = () => {
       setError({});
       toast.success("Signed up successful");
       const userInfo = {
-        name: name,
-        email: email,
+        name: user?.displayName,
+        email: user?.email,
         image: imageURL
       }
 

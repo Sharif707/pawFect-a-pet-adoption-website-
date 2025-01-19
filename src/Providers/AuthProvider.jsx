@@ -87,6 +87,7 @@ const AuthProvider = ({ children }) => {
     setUser,
     setLoading,
     error,
+    loading,
     setError
   };
   // if (loading) {
