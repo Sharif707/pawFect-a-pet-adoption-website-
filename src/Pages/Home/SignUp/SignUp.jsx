@@ -11,10 +11,20 @@ import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 import { TbFidgetSpinner } from "react-icons/tb";
-import { uploadImageToImageBB } from "../../Utils/UploadImage";
+
+import { Link } from "react-router-dom";
+
+import { saveUser, uploadImageToImageBB } from "../../Utils/Utils";
 
 const SignUp = () => {
-  const { setUser, createUser, setError, error } = useAuth();
+  const {
+    setUser,
+    createUser,
+    error,
+    setError,
+    signInwithGoogle,
+    updateUserProfile,
+  } = useAuth();
   const {
     register,
     handleSubmit,
@@ -26,29 +36,40 @@ const SignUp = () => {
     setisPasswordVisible(!isPasswordVisible);
   };
   const [loading, setLoading] = useState(false);
-
+  const handleGoogleSignup = () => {
+    signInwithGoogle()
+      .then((user) => {
+        setUser(user);
+        setError({});
+      })
+      .catch((err) => {
+        setError({ ...err, registerError: err.message });
+      });
+  };
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(data);
-    try {
-      const {name, email, password } = data;
-      const imageFile = data.image[0];
-    
-      const imageURL = await uploadImageToImageBB(imageFile);
-      // if (!imageURL) {
-      //   toast.error("Image upload failed. Please try again.");
-      //   return;
-      // }
-      const { user } = await createUser(email, password);
-      setUser(user);
-      setError({});
-      const userInfo = {
-        ...data,
-        role: "user",
-        image: imageURL,
-      };
 
+    try {
+      const { name, email, password } = data;
+      const imageFile = data.image[0];
+
+      const imageURL = await uploadImageToImageBB(imageFile);
+
+     
+      const { user } = await createUser(email, password);
+      await updateUserProfile(name, imageURL);
+    
+      setUser(user);
+
+      setError({});
       toast.success("Signed up successful");
+      const userInfo = {
+        name: name,
+        email: email,
+        image: imageURL
+      }
+
+      await saveUser(userInfo);
     } catch (error) {
       console.error("Error occurred", error.message);
       setError({ ...error, registerError: error?.message });
@@ -183,7 +204,10 @@ const SignUp = () => {
         <button className="bg-gray-100 p-3 rounded-full text-blue-600">
           <FaFacebook size={20} />
         </button>
-        <button className="bg-gray-100 p-3 rounded-full text-red-500">
+        <button
+          onClick={handleGoogleSignup}
+          className="bg-gray-100 p-3 rounded-full text-red-500"
+        >
           <FaGoogle size={20} />
         </button>
         <button className="bg-gray-100 p-3 rounded-full text-black">
@@ -194,9 +218,9 @@ const SignUp = () => {
       {/* Login Link */}
       <p className="text-gray-600 mt-6">
         Have an account?{" "}
-        <a href="/login" className="text-blue-500 hover:underline">
+        <Link to={"/login"} className="text-blue-500 hover:underline">
           Sign in
-        </a>
+        </Link>
       </p>
     </div>
   );

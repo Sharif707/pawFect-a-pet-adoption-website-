@@ -17,7 +17,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate("/");
+  
       toast.success("logged out");
     } catch (error) {}
   };
@@ -61,7 +61,7 @@ const Navbar = () => {
             <>
               {" "}
               <Link
-                className="bg-transparent py-2 px-4 rounded-lg text-[#0b0b0b] hover:text-white font-bold text-md transform transition-transform duration-300 hover:-translate-y-1"
+                className="bg-transparent py-2 px-4 rounded-lg text-[#0b0b0b]  font-bold text-md transform transition-transform duration-300 hover:-translate-y-1"
                 to="/login"
               >
                 Login

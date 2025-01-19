@@ -15,7 +15,7 @@ import {
 
 
 const Login = () => {
-  const { setUser, createUser, setError, error } = useAuth();
+  const {user, setUser, setError, error, loginUser, signInwithGoogle } = useAuth();
   const {
     register,
     handleSubmit,
@@ -29,13 +29,16 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(data);
+  
     try {
-      const { name, email, password } = data;
+      const { email, password } = data;
+    
 
-      const { user } = await createUser(email, password);
-      setUser(user);
-      setError({});
+     await loginUser(email, password)
+   
+    
+      // setUser(user);
+      // setError({});
       const userInfo = {
         ...data,
         role: "user",
@@ -44,10 +47,25 @@ const Login = () => {
       toast.success("Log in successful");
     } catch (error) {
       console.error("Error occurred", error.message);
-      setError({ ...error, registerError: error?.message });
+      // setError({ ...error, registerError: error?.message });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSignIn = () => {
+   if(user?.email){
+    toast.error("You r already logged in")
+    return;
+   }
+   signInwithGoogle()
+   .then((user) => {
+     setUser(user);
+     setError({});
+   })
+   .catch((err) => {
+     setError({ ...err, registerError: err.message });
+   });
   };
 
   return (
@@ -60,19 +78,7 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-sm flex flex-col gap-4"
       >
-        <div>
-          <input
-            type="text"
-            {...register("name", { required: "Name is required" })}
-            placeholder="Your name"
-            className={`w-full px-4 py-2 border ${
-              errors.name ? "border-red-500" : "border-gray-300"
-            } rounded focus:outline-none`}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
+      
 
         {/* Email Input */}
         <div>
@@ -162,7 +168,7 @@ const Login = () => {
         <button className="bg-gray-100 p-3 rounded-full text-blue-600">
           <FaFacebook size={20} />
         </button>
-        <button className="bg-gray-100 p-3 rounded-full text-red-500">
+        <button onClick={handleGoogleSignIn} className="bg-gray-100 p-3 rounded-full text-red-500">
           <FaGoogle size={20} />
         </button>
       
