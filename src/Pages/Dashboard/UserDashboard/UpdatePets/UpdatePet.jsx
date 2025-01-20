@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
+import { uploadImageToImageBB } from "../../../Utils/Utils";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const UpdatePet = () => {
   const { id } = useParams();
@@ -12,6 +14,7 @@ const UpdatePet = () => {
   const [loading, setLoading] = useState(true);
   const handleChange = (selectedValue) =>
     setselectedCategory(selectedValue.value);
+  const axiosSecure = useAxiosSecure();
 
   const petCategories = [
     { value: "dog", label: "Dog" },
@@ -23,11 +26,9 @@ const UpdatePet = () => {
   ];
 
   const fetchPetData = async (id) => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_API_URL}/single-pet/${id}`
-    );
+    const response = await axiosSecure(`/single-pet/${id}`);
 
-    console.log(response);
+    console.log("response data", response);
     return response.data;
   };
 
@@ -52,9 +53,19 @@ const UpdatePet = () => {
   // Handle form submission
   const onSubmit = async (formData) => {
     console.log(formData);
+
+    const imageFile = formData.petImage[0];
+
+    const imageURL = await uploadImageToImageBB(imageFile);
+    console.log("image url", imageURL);
+    const updatedPetsData = {
+      ...formData,
+      image: imageURL,
+      petImage: undefined,
+    };
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/pet-info-update/${id}`, {
-        formData,
+      await axiosSecure.put(`/pet-info-update/${id}`, {
+        updatedPetsData,
       });
       // navigate("/pets");
     } catch (err) {
@@ -180,7 +191,7 @@ const UpdatePet = () => {
           )}
           <input
             type="file"
-            {...register("image", {
+            {...register("petImage", {
               required: !petData?.image && "Image is required",
             })}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-200"
