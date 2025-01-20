@@ -1,109 +1,90 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 import useAuth from "../../../../Hooks/useAuth";
-import TableSkeleton from "../../../../Components/Loader/TableSkeleton";
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PetsTable = () => {
-  const navigate = useNavigate();
-  const [petsData, setPetsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [pets, setPets] = useState([]); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [pageSize, setPageSize] = useState(10); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
   const { user } = useAuth();
+  const navigate = useNavigate()
 
-  // Fetch pets data
+  // Fetch data from the API
   useEffect(() => {
     const fetchPets = async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/all-pets/${user?.email}`
         );
-        setPetsData(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch pets:", error);
-        setIsLoading(false);
+        setPets(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch pets", err);
+        setError(err);
+        setLoading(false);
       }
     };
+
     fetchPets();
   }, []);
-  const handleUpdate = (id) => {
-    console.log(id);
-  };
-  // Handle deletion
-  const handleDelete = async (id) => {
-    console.log("deletedId", id);
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const { data } = await axios.delete(
-          `${import.meta.env.VITE_API_URL}/delete-pets/${id}`
-        );
-        console.log("deletd data", data);
-        setPetsData((prevPets) => {
-          return prevPets.filter((pet) => pet._id !== id);
-        });
-        if (data.deletedCount === 1) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
-        }
-      }
-    });
+
+
+  const totalPages = Math.ceil(pets.length / pageSize); 
+  const startIndex = (currentPage - 1) * pageSize; 
+  console.log(startIndex);
+  const currentData = pets.slice(startIndex, startIndex + pageSize); 
+
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
-  // Handle marking as adopted
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+
+ 
+
   const handleAdopt = async (id) => {
+    console.log('adopted id', id)
     try {
       await axios.patch(`${import.meta.env.VITE_API_URL}/pet-info-update/${id}`, {
         isAdopted: true,
-      });
-   
-      setPetsData((prevPets) =>
+
+      }); // Replace with your adopt API
+      setPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
         )
       );
-    } catch (error) {
-      console.error("Failed to mark the pet as adopted:", error);
+    } catch (err) {
+      console.error("Failed to mark as adopted", err);
     }
   };
 
+  const handleDelete = async (id) => {
+    console.log(id)
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`); // Replace with your delete API
+      setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
+      toast.success("successfully deleted")
+    } catch (err) {
+      console.error("Failed to delete pet", err);
+    }
+  };
+
+  // Columns definition (existing functionality)
   const columns = [
-    {
-      header: "Name",
-      accessorKey: "petName", // Matches the "petName" field in your response
-    },
-    {
-      header: "Category",
-      accessorKey: "petCategory",
-    },
-    {
-      header: "Age",
-      accessorKey: "petAge",
-    },
-    {
-      header: "Location",
-      accessorKey: "petLocation",
-    },
-    {
-      header: "Short Description",
-      accessorKey: "shortDescription",
-    },
+    { header: "Name", accessorKey: "petName" },
+    { header: "Category", accessorKey: "petCategory" },
+    { header: "Age", accessorKey: "petAge" },
+    { header: "Location", accessorKey: "petLocation" },
+    { header: "Short Description", accessorKey: "shortDescription" },
     {
       header: "Image",
       accessorKey: "image",
@@ -128,22 +109,23 @@ const PetsTable = () => {
     {
       header: "Actions",
       cell: ({ row }) => (
+       
         <div className="flex gap-2">
           <button
             className="bg-lime-500 text-white px-3 py-1 rounded hover:bg-lime-600"
-            onClick={() => handleUpdate(row.original._id)}
+            onClick={() => navigate(`/dashboard/update-pet/${row?._id}`)}
           >
             Update
           </button>
           <button
             className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-            onClick={() => handleAdopt(row.original._id)}
+            onClick={() => handleAdopt(row?._id)}
           >
             Adopt
           </button>
           <button
             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-            onClick={() => handleDelete(row.original._id)}
+            onClick={() => handleDelete(row?._id)}
           >
             Delete
           </button>
@@ -152,55 +134,78 @@ const PetsTable = () => {
     },
   ];
 
-  const table = useReactTable({
-    data: petsData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  if (isLoading) {
-    return (
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Added Pets</h1>
-        <TableSkeleton rowsCount={5} columnsCount={6} />
-      </div>
-    );
+  if (loading) {
+    return <p>Loading...</p>;
   }
+
+  if (error) {
+    return <p>Error loading pets: {error.message}</p>;
+  }
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Added Pets</h1>
-      <table className="w-full border-collapse border border-gray-300">
+    <div className="px-4">
+      <h1 className="text-2xl font-bold mb-4">Pets Table</h1>
+      <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="border border-gray-300 px-4 py-2"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
+          <tr>
+            {columns.map((column) => (
+              <th
+                key={column.header}
+                className="border border-gray-300 px-4 py-2"
+              >
+                {column.header}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-100">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border border-gray-300 px-4 py-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {currentData.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {columns.map((column, colIndex) => (
+                <td key={colIndex} className="border border-gray-300 px-4 py-2">
+                  {column.cell
+                    ? column.cell({
+                        row,
+                        getValue: () => row[column.accessorKey],
+                      })
+                    : row[column.accessorKey]}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      {pets.length > 10 && (
+        <div className="flex justify-end items-center gap-4 mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 bg-gray-500 text-white rounded ${
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-600"
+            }`}
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 bg-gray-500 text-white rounded ${
+              currentPage === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-600"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

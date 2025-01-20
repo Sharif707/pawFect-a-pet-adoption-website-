@@ -8,6 +8,7 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import AddPetForm from "../Pages/Dashboard/UserDashboard/AddPets/AddPets";
 import PetsTable from "../Pages/Dashboard/UserDashboard/PetsTable/PetsTable";
+import UpdatePet from "../Pages/Dashboard/UserDashboard/UpdatePets/UpdatePet";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
+        index: true,
         path: "/dashboard/add-pets",
         element: (
           <PrivateRoute>
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <PetsTable />,
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/update-pet/:id",
+        element: (
+          <PrivateRoute>
+            <UpdatePet />
           </PrivateRoute>
         ),
       },

@@ -4,6 +4,7 @@ import Select from "react-select";
 import useAuth from "../../../../Hooks/useAuth";
 import { uploadImageToImageBB } from "../../../Utils/Utils";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddPetForm = () => {
   const {
@@ -48,12 +49,14 @@ const AddPetForm = () => {
       };
 
       // Send data to the backend
-      const response = await axios.post(
+   const response =  await axios.post(
         `${import.meta.env.VITE_API_URL}/add-pets/${user?.email}`,
         petsData
       );
+      console.log(response);
+      toast.success("Your Pet has been added")
 
-      console.log("Added Pet Data:", response.data);
+ 
     } catch (error) {
       console.error("Error submitting the form:", error);
     }
