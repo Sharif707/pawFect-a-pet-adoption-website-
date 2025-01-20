@@ -3,22 +3,24 @@ import axios from "axios";
 import useAuth from "../../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 
 const PetsTable = () => {
-  const [pets, setPets] = useState([]); 
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [pageSize, setPageSize] = useState(10); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+  const [pets, setPets] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { user } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   // Fetch data from the API
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/all-pets/${user?.email}`
+        const response = await axiosSecure(
+          `/all-pets/${user?.email}`
         );
         setPets(response.data);
         setLoading(false);
@@ -32,12 +34,10 @@ const PetsTable = () => {
     fetchPets();
   }, []);
 
-
-  const totalPages = Math.ceil(pets.length / pageSize); 
-  const startIndex = (currentPage - 1) * pageSize; 
+  const totalPages = Math.ceil(pets.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
   console.log(startIndex);
-  const currentData = pets.slice(startIndex, startIndex + pageSize); 
-
+  const currentData = pets.slice(startIndex, startIndex + pageSize);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -47,16 +47,15 @@ const PetsTable = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-
- 
-
   const handleAdopt = async (id) => {
-    console.log('adopted id', id)
+    console.log("adopted id", id);
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/pet-info-update/${id}`, {
-        isAdopted: true,
-
-      }); // Replace with your adopt API
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/pet-info-update/${id}`,
+        {
+          isAdopted: true,
+        }
+      ); // Replace with your adopt API
       setPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
@@ -68,11 +67,11 @@ const PetsTable = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log(id)
+    console.log(id);
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`); // Replace with your delete API
       setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
-      toast.success("successfully deleted")
+      toast.success("successfully deleted");
     } catch (err) {
       console.error("Failed to delete pet", err);
     }
@@ -109,7 +108,6 @@ const PetsTable = () => {
     {
       header: "Actions",
       cell: ({ row }) => (
-       
         <div className="flex gap-2">
           <button
             className="bg-lime-500 text-white px-3 py-1 rounded hover:bg-lime-600"
