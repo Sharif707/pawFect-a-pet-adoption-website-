@@ -1,8 +1,12 @@
 import React from "react";
 
-
-const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
-  
+const EditDonationForm = ({
+  register,
+  handleSubmit,
+  onSubmit,
+  errors,
+  user,
+}) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
@@ -17,48 +21,50 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
           <h1 className="text-2xl font-bold text-gray-800 mt-4">
             Share Your Campaign
           </h1>
-          <p className="text-pink-500">Donation Campaign Form</p>
+          <p className="text-pink-500">Edit Donation Form</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-         
           <div className="flex space-x-4">
-            <div className="w-full">
+            <div className="w-1/2">
               <label className="block text-[#6B7280] font-medium">
-                Full Name
+                First Name
               </label>
               <input
-              value={user?.displayName}
+                value={user?.displayName}
                 type="text"
-                {...register("fullName", { required: true })}
+                {...register("firstName", { required: true })}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
                 placeholder="First Name"
               />
-              {errors.fullName && (
+              {errors.firstName && (
                 <p className="text-red-500 text-sm mt-1">
-                  Full Name is required
+                  First Name is required
                 </p>
               )}
             </div>
-           
+            <div className="w-1/2">
+              <label className="block text-[#6B7280] font-medium">
+                Last Name
+              </label>
+              <input
+                value={"Sofder"}
+                type="text"
+                {...register("lastName", { required: true })}
+                className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
+                placeholder="Last Name"
+              />
+              {errors.lastName && (
+                <p className="text-red-500 text-sm mt-1">
+                  Last Name is required
+                </p>
+              )}
+            </div>
           </div>
 
           <div>
-            <label className="block text-[#6B7280] font-medium">Campaign Name</label>
-            <input
-           
-              type="text"
-              {...register("campaignName", { required: true })}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
-              placeholder="Your Campaign Name"
-            />
-            {errors.campaignName && (
-              <p className="text-red-500 text-sm mt-1">Campaign Name is required</p>
-            )}
-          </div>
-          <div>
             <label className="block text-[#6B7280] font-medium">Email</label>
             <input
-            value={user?.email}
+              value={user?.email}
               type="email"
               {...register("email", { required: true })}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
@@ -69,13 +75,11 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
             )}
           </div>
 
-         
           <div>
             <label className="block text-[#6B7280] font-medium">
               Maximum Donation Amount
             </label>
             <input
-           
               type="number"
               {...register("donationAmount", { required: true })}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
@@ -104,7 +108,6 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
             )}
           </div>
 
-
           <div>
             <label className="block text-[#6B7280] font-medium">
               Short Description
@@ -122,7 +125,6 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
             )}
           </div>
 
-         
           <div>
             <label className="block text-[#6B7280] font-medium">
               Long Description
@@ -140,7 +142,6 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
             )}
           </div>
 
-         
           <div className="text-center">
             <button
               type="submit"
@@ -155,4 +156,4 @@ const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
   );
 };
 
-export default DonationForm;
+export default EditDonationForm;

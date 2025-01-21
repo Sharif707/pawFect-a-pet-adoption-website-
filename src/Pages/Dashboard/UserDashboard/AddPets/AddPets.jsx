@@ -55,8 +55,10 @@ const AddPetForm = () => {
         `/add-pets/${user?.email}`,
         petsData
       );
-      console.log(response);
-      toast.success("Your Pet has been added");
+   
+      if (response.data?.insertedId) {
+        toast.success("Your Pet has been added");
+      }
     } catch (error) {
       console.error("Error submitting the form:", error);
     }

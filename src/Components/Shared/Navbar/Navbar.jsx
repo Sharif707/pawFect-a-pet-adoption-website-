@@ -43,7 +43,7 @@ const Navbar = () => {
           <Link to="#about" className="text-[#494949] px-4 py-2 font-bold">
             Pet Listing
           </Link>
-          <Link to="#services" className="text-[#494949] px-4 py-2 font-bold">
+          <Link to={"/dashboard/donation"} className="text-[#494949] px-4 py-2 font-bold">
             Donation Campaigns
           </Link>
         </div>
