@@ -13,19 +13,21 @@ import useAxiosSecure from "../../../../../Hooks/useAxiosSecure";
 import useAuth from "../../../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import DonatorsModal from "../../../../../Components/Modal/DonatorsModal";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 
 const DonationCampaigns = () => {
   const [selectedDonation, setSelectedDonation] = useState(null);
   const [showDonators, setShowDonators] = useState(false);
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     data: donations = [],
     isLoading,
     error,
+    
     refetch,
   } = useQuery({
     queryKey: ["myDonations", user?.email],
@@ -39,33 +41,17 @@ const DonationCampaigns = () => {
     enabled: !!user?.email,
   });
 
-  // Mutation for toggling pause state
-  const togglePauseMutation = useMutation({
-    mutationFn: (donationId) =>
-      axiosSecure.patch(`/donations/${donationId}/toggle-pause`),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["myDonations", user?.email]);
-      toast.success("Donation status updated successfully");
-    },
-    onError: (error) => {
-      toast.error("Failed to update donation status");
-      console.error("Error:", error);
-    },
-  });
-
   const handlePauseToggle = async (donationId) => {
-    // togglePauseMutation.mutate(donationId);
     console.log("donation id", donationId);
-    const { data } = await axiosSecure.patch(`/toggle-pause/${donationId}`, {
-      isPaused: true,
-    });
+    const { data } = await axiosSecure.patch(`/toggle-pause/${donationId}`);
+    if (data?.modifiedCount) {
+      toast.success("Button toggled");
+    }
     refetch();
-    console.log(data);
   };
 
   const handleEdit = (donationId) => {
-    // Navigate to edit page with the donation ID
-    console.log("Navigate to edit page for donation:", donationId);
+    navigate(`/dashboard/edited-donation/${donationId}`);
   };
 
   const handleViewDonators = (donation) => {
@@ -74,6 +60,7 @@ const DonationCampaigns = () => {
   };
 
   const columnHelper = createColumnHelper();
+  console.log(columnHelper);
 
   const columns = [
     columnHelper.accessor("petImage", {
@@ -111,14 +98,13 @@ const DonationCampaigns = () => {
       header: "Actions",
       cell: (info) => {
         const donation = info.row.original;
-        console.log("donation doc", donation);
+
         return (
           <div className="flex justify-center gap-2">
             <button
               onClick={() => handlePauseToggle(donation._id)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
               title={donation.isPaused ? "Resume Donation" : "Pause Donation"}
-              disabled={donation.isPaused}
             >
               {donation.isPaused ? (
                 <PlayCircle className="h-5 w-5 text-green-600" />
@@ -153,18 +139,7 @@ const DonationCampaigns = () => {
   });
 
   if (isLoading) {
-    return (
-      <div className="w-full max-w-4xl mx-auto p-6 text-center">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mx-auto mb-6"></div>
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner count={5} width={300} height={30} message="fetching data" />;
   }
 
   if (error) {

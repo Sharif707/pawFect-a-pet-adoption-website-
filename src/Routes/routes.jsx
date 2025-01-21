@@ -11,6 +11,7 @@ import PetsTable from "../Pages/Dashboard/UserDashboard/PetsTable/PetsTable";
 import UpdatePet from "../Pages/Dashboard/UserDashboard/UpdatePets/UpdatePet";
 import DonationFormContainer from "../Pages/Dashboard/UserDashboard/Donation/DonationFormContainer";
 import DonationCampaigns from "../Pages/Dashboard/UserDashboard/Donation/MyDonationCampaigns/MyDonationCampaigns";
+import EditDonation from "../Pages/Dashboard/UserDashboard/Donation/EditDonation/EditDonation";
 
 const router = createBrowserRouter([
   {
@@ -68,19 +69,16 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: "/dashboard/edited-donation",
-      //   element: (
-      //     <PrivateRoute>
-      //       <EditDonation />,
-      //     </PrivateRoute>
-      //   ),
-      // },
+      //
       {
         path: "/dashboard/my-campaigns",
+        element: <DonationCampaigns />,
+      },
+      {
+        path: "/dashboard/edited-donation/:id",
         element: (
           <PrivateRoute>
-            <DonationCampaigns />,
+            <EditDonation />,
           </PrivateRoute>
         ),
       },
