@@ -5,7 +5,7 @@ const EditDonationForm = ({
   handleSubmit,
   onSubmit,
   errors,
-  user,
+  existingImage,
 }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -25,46 +25,44 @@ const EditDonationForm = ({
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="flex space-x-4">
-            <div className="w-1/2">
+            <div className="w-full">
               <label className="block text-[#6B7280] font-medium">
-                First Name
+                Full Name
               </label>
               <input
-                value={user?.displayName}
                 type="text"
-                {...register("firstName", { required: true })}
+                {...register("fullName", { required: true })}
                 className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
-                placeholder="First Name"
+                placeholder="Full Name"
               />
-              {errors.firstName && (
+              {errors.fullName && (
                 <p className="text-red-500 text-sm mt-1">
                   First Name is required
-                </p>
-              )}
-            </div>
-            <div className="w-1/2">
-              <label className="block text-[#6B7280] font-medium">
-                Last Name
-              </label>
-              <input
-                value={"Sofder"}
-                type="text"
-                {...register("lastName", { required: true })}
-                className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
-                placeholder="Last Name"
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-sm mt-1">
-                  Last Name is required
                 </p>
               )}
             </div>
           </div>
 
           <div>
+            <label className="block text-[#6B7280] font-medium">
+              Campaign Name
+            </label>
+            <input
+              type="text"
+              {...register("campaignName", { required: true })}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
+              placeholder="Your Campaign Name"
+            />
+            {errors.campaignName && (
+              <p className="text-red-500 text-sm mt-1">
+                Campaign Name is required
+              </p>
+            )}
+          </div>
+
+          <div>
             <label className="block text-[#6B7280] font-medium">Email</label>
             <input
-              value={user?.email}
               type="email"
               {...register("email", { required: true })}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md text-gray-700"
@@ -96,9 +94,19 @@ const EditDonationForm = ({
             <label className="block text-[#6B7280] font-medium">
               Pet Picture
             </label>
+            {existingImage && (
+              <div className="mb-2">
+                <img
+                  src={existingImage}
+                  alt="Current pet"
+                  className="w-32 h-32 object-cover rounded-md"
+                />
+              </div>
+            )}
             <input
               type="file"
-              {...register("petPicture", { required: true })}
+             
+              {...register("petPicture", {required: true})}
               className="mt-1 w-full text-gray-700"
             />
             {errors.petPicture && (

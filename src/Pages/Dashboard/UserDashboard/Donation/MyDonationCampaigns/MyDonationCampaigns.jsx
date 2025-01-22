@@ -35,14 +35,14 @@ const DonationCampaigns = () => {
       const response = await axiosSecure.get(
         `/my-donation-campaigns/${user?.email}`
       );
-      console.log("responsed", response);
+  
       return response.data;
     },
     enabled: !!user?.email,
   });
 
   const handlePauseToggle = async (donationId) => {
-    console.log("donation id", donationId);
+
     const { data } = await axiosSecure.patch(`/toggle-pause/${donationId}`);
     if (data?.modifiedCount) {
       toast.success("Button toggled");
@@ -60,7 +60,7 @@ const DonationCampaigns = () => {
   };
 
   const columnHelper = createColumnHelper();
-  console.log(columnHelper);
+ 
 
   const columns = [
     columnHelper.accessor("petImage", {
