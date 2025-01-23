@@ -14,6 +14,7 @@ import DonationCampaigns from "../Pages/Dashboard/UserDashboard/Donation/MyDonat
 import EditDonation from "../Pages/Dashboard/UserDashboard/Donation/EditDonation/EditDonation";
 import AllDonations from "../Pages/AllDonations/AllDonations";
 import PetListing from "../Pages/PetListing/PetListing";
+import PetDetails from "../Pages/PetDetails/PetDetails";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/all-pets",
-    element: <PetListing />,
+    element: (
+      <PrivateRoute>
+        <PetListing />,
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/pet-details/:id",
+    element: (
+      <PrivateRoute>
+        <PetDetails />,
+      </PrivateRoute>
+    ),
   },
   {
     path: "/dashboard",

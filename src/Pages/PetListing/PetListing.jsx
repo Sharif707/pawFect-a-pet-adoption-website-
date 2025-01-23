@@ -5,7 +5,7 @@ import LoadingSpinner from "../../Components/Shared/LoadingSpinner/LoadingSpinne
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import PetListingCard from "../../Components/PetListingCard/PetListingCard";
-import { Input, Select } from "@material-tailwind/react";
+import { Input, Select, Option } from "@material-tailwind/react";
 
 const PetListing = () => {
 
@@ -29,7 +29,7 @@ const PetListing = () => {
       return data;
     },
   });
-  const handleCategoryChange = (value) => setCategory(value);
+  const handleCategoryChange = (category) => setCategory(category)
 
   const handleSearch = () => {
     setSearch(inputValue);
@@ -81,7 +81,7 @@ const PetListing = () => {
 
           <Select
         label="Filter by category"
-        onChange={(value) => handleCategoryChange(value)}
+        onChange={handleCategoryChange}
         className="w-full"
       >
         <Option value="">All Categories</Option>

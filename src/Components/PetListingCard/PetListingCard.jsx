@@ -1,57 +1,77 @@
-import React from 'react';
-import { Card, Typography } from "@material-tailwind/react";
-const PetListingCard = ({pet}) => {
-    const {
-        petCategory, image, petName,
-        petLocation, petAge, shortDescription, longDescription} = pet || {}
-    return (
-        <Card className="max-w-sm p-4 shadow-lg">
-    
-        <div className="relative">
-          <img
-            src={image}
-            alt="Emergency Veterinary Costs"
-            className="rounded-t-lg object-cover w-full h-48"
-          />
-      
-          <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-md shadow-md">
-            <Typography className="text-xs font-bold">🇦🇹 AT</Typography>
-          </div>
-        </div>
-  
-      
-        <div className="p-4">
+import React from "react";
+import { Card, Typography, Button } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
-          <Typography
-            variant="small"
-            className="text-yellow-500 uppercase font-bold tracking-wide"
-          >
-           {petName}
+const PetListingCard = ({ pet }) => {
+  const { petCategory, image, petName, petLocation, petAge, longDescription , _id} =
+    pet || {};
+
+  return (
+    <Card className="max-w-sm p-4 shadow-lg hover:shadow-xl transition duration-300 bg-white">
+      {/* Image Section */}
+      <div className="relative">
+        <img
+          src={image}
+          alt={petName}
+          className="rounded-t-lg object-cover w-full h-48"
+        />
+
+        {/* Pet Category Badge */}
+        <div className="absolute top-2 left-2 bg-yellow-500 px-3 py-1 rounded-md shadow-md">
+          <Typography className="text-xs font-bold text-white uppercase">
+            {petCategory}
           </Typography>
-  
-      
-          <Typography variant="h5" className="mt-2 font-semibold text-gray-800">
-           let's see
-          </Typography>
-  
-     
-          <Typography variant="paragraph" className="mt-1 text-gray-600 text-sm">
-           {longDescription}
-          </Typography>
-  
-   
-          
-  
-        
-  
-          {/* Fundraising Info */}
-          {/* <Typography className="mt-2 text-gray-800 font-semibold">
-            €587 raised
-          </Typography>
-          <Typography className="text-gray-500 text-sm">97% funded</Typography> */}
         </div>
-      </Card>
-    );
+      </div>
+
+      {/* Content Section */}
+      <div className="p-4">
+        {/* Pet Name */}
+        <Typography
+          variant="h6"
+          className="font-bold text-gray-800 mb-1 capitalize"
+        >
+          {petName}
+        </Typography>
+
+        {/* Pet Location */}
+        <Typography
+          variant="small"
+          className="text-gray-600 uppercase tracking-wide"
+        >
+          Location: {petLocation}
+        </Typography>
+
+      
+        <Typography
+          variant="small"
+          className="text-gray-500 mt-1"
+        >
+          Age: {petAge}
+        </Typography>
+
+      
+        <Typography
+          variant="paragraph"
+          className="mt-2 text-sm text-gray-700 line-clamp-3"
+        >
+          {longDescription}
+        </Typography>
+
+     
+        <Button
+          color="blue"
+          size="sm"
+          ripple={true}
+          className="mt-4 w-full"
+          onClick={() => alert(`Viewing details for ${petName}`)}
+        >
+        <Link to={`/pet-details/${_id}`}>
+        View Details</Link>
+        </Button>
+      </div>
+    </Card>
+  );
 };
 
 export default PetListingCard;
