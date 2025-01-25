@@ -4,6 +4,7 @@ import useAuth from "../../../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 
 const PetsTable = () => {
   const [pets, setPets] = useState([]);
@@ -15,20 +16,20 @@ const PetsTable = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
-  // Fetch data from the API
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await axiosSecure(
-          `/all-pets/${user?.email}`
-        );
+        setLoading(true);
+        const response = await axiosSecure(`/all-pets/${user?.email}`);
+        console.log(response.data);
         setPets(response.data);
-        setLoading(false);
+        
       } catch (err) {
         console.error("Failed to fetch pets", err);
         setError(err);
-        setLoading(false);
+        
       }
+      setLoading(false);
     };
 
     fetchPets();
@@ -50,12 +51,12 @@ const PetsTable = () => {
   const handleAdopt = async (id) => {
     console.log("adopted id", id);
     try {
-      await axios.patch(
+      await axiosSecure.patch(
         `${import.meta.env.VITE_API_URL}/pet-info-update/${id}`,
         {
           isAdopted: true,
         }
-      ); // Replace with your adopt API
+      );
       setPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
@@ -69,7 +70,7 @@ const PetsTable = () => {
   const handleDelete = async (id) => {
     console.log(id);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`); // Replace with your delete API
+      await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`);
       setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
       toast.success("successfully deleted");
     } catch (err) {
@@ -77,7 +78,6 @@ const PetsTable = () => {
     }
   };
 
-  // Columns definition (existing functionality)
   const columns = [
     { header: "Name", accessorKey: "petName" },
     { header: "Category", accessorKey: "petCategory" },
@@ -133,7 +133,7 @@ const PetsTable = () => {
   ];
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner count={5} width={300} height={30} message="Loading data" />
   }
 
   if (error) {
@@ -174,7 +174,7 @@ const PetsTable = () => {
         </tbody>
       </table>
 
-      {/* Pagination */}
+     
       {pets.length > 10 && (
         <div className="flex justify-end items-center gap-4 mt-4">
           <button

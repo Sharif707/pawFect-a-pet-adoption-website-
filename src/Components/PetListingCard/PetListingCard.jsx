@@ -3,8 +3,15 @@ import { Card, Typography, Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
 const PetListingCard = ({ pet }) => {
-  const { petCategory, image, petName, petLocation, petAge, longDescription , _id} =
-    pet || {};
+  const {
+    petCategory,
+    image,
+    petName,
+    petLocation,
+    petAge,
+    longDescription,
+    _id,
+  } = pet || {};
 
   return (
     <Card className="max-w-sm p-4 shadow-lg hover:shadow-xl transition duration-300 bg-white">
@@ -42,15 +49,10 @@ const PetListingCard = ({ pet }) => {
           Location: {petLocation}
         </Typography>
 
-      
-        <Typography
-          variant="small"
-          className="text-gray-500 mt-1"
-        >
+        <Typography variant="small" className="text-gray-500 mt-1">
           Age: {petAge}
         </Typography>
 
-      
         <Typography
           variant="paragraph"
           className="mt-2 text-sm text-gray-700 line-clamp-3"
@@ -58,17 +60,11 @@ const PetListingCard = ({ pet }) => {
           {longDescription}
         </Typography>
 
-     
-        <Button
-          color="blue"
-          size="sm"
-          ripple={true}
-          className="mt-4 w-full"
-          onClick={() => alert(`Viewing details for ${petName}`)}
-        >
         <Link to={`/pet-details/${_id}`}>
-        View Details</Link>
-        </Button>
+          <Button color="blue" size="sm" ripple={true} className="mt-4 w-full">
+            View Details
+          </Button>
+        </Link>
       </div>
     </Card>
   );

@@ -15,6 +15,7 @@ import EditDonation from "../Pages/Dashboard/UserDashboard/Donation/EditDonation
 import AllDonations from "../Pages/AllDonations/AllDonations";
 import PetListing from "../Pages/PetListing/PetListing";
 import PetDetails from "../Pages/PetDetails/PetDetails";
+import AdoptionRequestTable from "../Pages/Dashboard/UserDashboard/AdoptionRequest/AdoptionRequest";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
             <EditDonation />,
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/dashboard/adoption-request",
+        element: <AdoptionRequestTable />,
       },
     ],
   },

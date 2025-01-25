@@ -150,7 +150,7 @@ const Login = () => {
               color="#fff"
             />
           ) : (
-            "Sign up"
+            "Sign in"
           )}
         </button>
       </form>

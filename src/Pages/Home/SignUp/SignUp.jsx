@@ -36,15 +36,23 @@ const SignUp = () => {
     setisPasswordVisible(!isPasswordVisible);
   };
   const [loading, setLoading] = useState(false);
-  const handleGoogleSignup = () => {
-    signInwithGoogle()
-      .then((user) => {
-        setUser(user);
-        setError({});
-      })
-      .catch((err) => {
-        setError({ ...err, registerError: err.message });
-      });
+  const handleGoogleSignup = async () => {
+    try {
+      const { user } = await signInwithGoogle();
+      const userInfo = {
+        name: user?.displayName,
+        email: user?.email,
+        image: user?.photoURL
+      }
+      console.log('userinfo', userInfo);
+     
+
+      setUser(user);
+
+      setError({});
+    } catch (error) {
+      setError({ ...error, registerError: error.message });
+    }
   };
   const onSubmit = async (data) => {
     setLoading(true);
@@ -56,21 +64,16 @@ const SignUp = () => {
 
       const imageURL = await uploadImageToImageBB(imageFile);
 
-     
       const { user } = await createUser(email, password);
       await updateUserProfile(name, imageURL);
-    
+
       setUser(user);
 
       setError({});
       toast.success("Signed up successful");
-      const userInfo = {
-        name: user?.displayName,
-        email: user?.email,
-        image: imageURL
-      }
+   
 
-      await saveUser(userInfo);
+    
     } catch (error) {
       console.error("Error occurred", error.message);
       setError({ ...error, registerError: error?.message });
@@ -117,7 +120,7 @@ const SignUp = () => {
           )}
         </div>
 
-        {/* Email Input */}
+  
         <div>
           <input
             type="email"

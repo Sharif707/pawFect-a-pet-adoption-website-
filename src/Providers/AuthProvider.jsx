@@ -12,6 +12,7 @@ import {
 // import Loading from "../Components/Loading/Loading";
 import axios from "axios";
 import LoadingSpinner from "../Components/Shared/LoadingSpinner/LoadingSpinner";
+import { saveUser } from "../Pages/Utils/Utils";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(appInfo);
@@ -19,9 +20,8 @@ const auth = getAuth(appInfo);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState({})
+  const [error, setError] = useState({});
 
   const createUser = (email, password) => {
     setLoading(true);
@@ -48,17 +48,25 @@ const AuthProvider = ({ children }) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photo,
-    })
-  }
-  console.log(import.meta.env.VITE_API_URL)
+    });
+  };
+  console.log(import.meta.env.VITE_API_URL);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-    
+      console.log("currentuser info", currentUser);
       console.log("photourl", currentUser?.photoURL);
       if (currentUser?.email) {
         setUser(currentUser);
-
+        if (currentUser?.displayName && currentUser?.photoURL) {
+          const userInfo = {
+            name: currentUser?.displayName,
+            email: currentUser?.email,
+            image: currentUser?.photoURL,
+          };
+          console.log("userinfo", userInfo);
+          await saveUser(userInfo);
+        }
         // Get JWT token
         await axios.post(
           `${import.meta.env.VITE_API_URL}/jwt`,
@@ -91,7 +99,7 @@ const AuthProvider = ({ children }) => {
     setLoading,
     error,
     loading,
-    setError
+    setError,
   };
   // if (loading) {
   //   return <LoadingSpinner count={5} width="80%" height={30} />;
