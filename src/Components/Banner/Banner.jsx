@@ -16,7 +16,7 @@ import useAuth from "../../Hooks/useAuth";
 
 const Banner = () => {
   const { user } = useAuth();
-  console.log("user", user);
+
   const sliderData = [
     {
       image: banner1,

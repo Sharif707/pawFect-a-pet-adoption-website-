@@ -13,7 +13,6 @@ export const uploadImageToImageBB = async (file) => {
 };
 
 export const saveUser = async (user) => {
- 
-  console.log("saved user data", user);
+ console.log("saved user data", user);
   await axios.post(`${import.meta.env.VITE_API_URL}/all-users/${user?.email}`, user);
 };

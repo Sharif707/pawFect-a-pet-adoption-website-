@@ -16,6 +16,8 @@ import AllDonations from "../Pages/AllDonations/AllDonations";
 import PetListing from "../Pages/PetListing/PetListing";
 import PetDetails from "../Pages/PetDetails/PetDetails";
 import AdoptionRequestTable from "../Pages/Dashboard/UserDashboard/AdoptionRequest/AdoptionRequest";
+import UsersList from "../Pages/Dashboard/Admin/AllUsers/UsersList";
+
 
 const router = createBrowserRouter([
   {
@@ -34,28 +36,30 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
+      {
+        path: "/all-donations",
+        element: <AllDonations />,
+      },
+
+      {
+        path: "/all-pets",
+        element: (
+          <PrivateRoute>
+            <PetListing />,
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/pet-details/:id",
+        element: (
+          <PrivateRoute>
+            <PetDetails />,
+          </PrivateRoute>
+        ),
+      },
     ],
   },
-  {
-    path: "/all-donations",
-    element: <AllDonations />,
-  },
-  {
-    path: "/all-pets",
-    element: (
-      <PrivateRoute>
-        <PetListing />,
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "/pet-details/:id",
-    element: (
-      <PrivateRoute>
-        <PetDetails />,
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: "/dashboard",
     element: <DashboardLayout />,
@@ -114,6 +118,11 @@ const router = createBrowserRouter([
         path: "/dashboard/adoption-request",
         element: <AdoptionRequestTable />,
       },
+      {
+        path: "/dashboard/all-users",
+        element: <UsersList/>,
+      }
+    
     ],
   },
 ]);

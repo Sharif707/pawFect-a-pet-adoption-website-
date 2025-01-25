@@ -4,11 +4,12 @@ import {
   flexRender,
   getCoreRowModel,
 } from "@tanstack/react-table";
+import Swal from 'sweetalert2'
 import axios from "axios";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
-import toast from "react-hot-toast";
+
 
 const AdoptionRequestTable = () => {
   const [adoptionData, setAdoptionData] = useState([]);
@@ -40,16 +41,46 @@ const AdoptionRequestTable = () => {
     }
   }, [userEmail]);
 
-  const handleAccept = async (id) => {
-    console.log(id);
-    const { data } = await axiosSecure.delete(`/delete-adoption/${id}`);
-    if (data?.deletedCount === 1) {
-      setAdoptionData((prev) => {
-        return prev.filter((adoption) => adoption._id !== id);
-      });
-      return toast.success("successfully deleted");
-    }
+
+
+  const handleDelete = async (id) => {
+    // Display SweetAlert confirmation dialog
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+       
+          const { data } = await axiosSecure.delete(`/delete-adoption/${id}`);
+          if (data?.deletedCount === 1) {
+            setAdoptionData((prev) => {
+              return prev.filter((adoption) => adoption._id !== id);
+            });
+      
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting adoption:", error);
+          Swal.fire({
+            title: "Error!",
+            text: "Something went wrong while deleting the record.",
+            icon: "error",
+          });
+        }
+      }
+    });
   };
+  
   const columns = [
     {
       accessorKey: "petDetails.petName",
@@ -74,7 +105,7 @@ const AdoptionRequestTable = () => {
           >
             Accept
           </button>
-          <button className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
+          <button onClick={() => handleDelete(row.original._id)} className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
             Reject
           </button>
         </div>

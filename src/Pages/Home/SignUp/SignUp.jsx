@@ -39,13 +39,6 @@ const SignUp = () => {
   const handleGoogleSignup = async () => {
     try {
       const { user } = await signInwithGoogle();
-      const userInfo = {
-        name: user?.displayName,
-        email: user?.email,
-        image: user?.photoURL
-      }
-      console.log('userinfo', userInfo);
-     
 
       setUser(user);
 
@@ -71,9 +64,6 @@ const SignUp = () => {
 
       setError({});
       toast.success("Signed up successful");
-   
-
-    
     } catch (error) {
       console.error("Error occurred", error.message);
       setError({ ...error, registerError: error?.message });
@@ -120,7 +110,6 @@ const SignUp = () => {
           )}
         </div>
 
-  
         <div>
           <input
             type="email"

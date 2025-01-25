@@ -68,7 +68,7 @@ const PetsTable = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log(id);
+ 
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`);
       setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));

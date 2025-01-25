@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
       photoURL: photo,
     });
   };
-  console.log(import.meta.env.VITE_API_URL);
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
