@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import useAuth from "../../../../Hooks/useAuth";
+
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
-import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 
+import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
+import useAuth from "../../../../Hooks/useAuth";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const AllPets = () => {
   const [allpets, setallPets] = useState([]);
@@ -24,11 +26,9 @@ const AllPets = () => {
         const response = await axiosSecure(`/dashboard/all-pets`);
         console.log(response.data);
         setallPets(response.data);
-        
       } catch (err) {
         console.error("Failed to fetch pets", err);
         setError(err);
-        
       }
       setLoading(false);
     };
@@ -52,28 +52,33 @@ const AllPets = () => {
   const handleAdopt = async (id) => {
     console.log("adopted id", id);
     try {
-      await axiosSecure.patch(
-        `${import.meta.env.VITE_API_URL}/pet-info-update/${id}`,
-        {
-          isAdopted: true,
-        }
-      );
-      setPets((prevPets) =>
+      const { data } = await axiosSecure.patch(`/all-pets-info-update/${id}`, {
+        isAdopted: true,
+      });
+      console.log("adopted object", data);
+      setallPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
         )
+        
       );
+      if (data.modifiedCount === 1) {
+        return toast.success("successfully Adopted");
+      }
     } catch (err) {
       console.error("Failed to mark as adopted", err);
     }
   };
 
   const handleDelete = async (id) => {
- 
+    console.log("deleted id", id);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`);
-      setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
-      toast.success("successfully deleted");
+      const { data } = await axiosSecure.delete(`/delete-all-pets/${id}`);
+
+      setallPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
+      if (data.deletedCount === 1) {
+        return toast.success("successfully deleted");
+      }
     } catch (err) {
       console.error("Failed to delete pet", err);
     }
@@ -134,7 +139,14 @@ const AllPets = () => {
   ];
 
   if (loading) {
-    return <LoadingSpinner count={5} width={300} height={30} message="Loading data" />
+    return (
+      <LoadingSpinner
+        count={5}
+        width={300}
+        height={30}
+        message="Loading data"
+      />
+    );
   }
 
   if (error) {
@@ -143,7 +155,12 @@ const AllPets = () => {
 
   return (
     <div className="px-4">
-      <h1 className="text-2xl font-bold mb-4">Pets Table</h1>
+      <Helmet>
+        <title>
+        All Pets
+        </title>
+      </Helmet>
+      <h1 className="text-2xl font-bold mb-4">All Pets Table</h1>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr>
@@ -175,7 +192,6 @@ const AllPets = () => {
         </tbody>
       </table>
 
-     
       {allpets.length > 10 && (
         <div className="flex justify-end items-center gap-4 mt-4">
           <button

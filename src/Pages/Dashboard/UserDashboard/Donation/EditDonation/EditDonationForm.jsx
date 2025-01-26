@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 
 const EditDonationForm = ({
   register,
@@ -9,6 +10,9 @@ const EditDonationForm = ({
 }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Helmet>
+        <title>Edit Donation</title>
+      </Helmet>
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center">
@@ -105,8 +109,7 @@ const EditDonationForm = ({
             )}
             <input
               type="file"
-             
-              {...register("petPicture", {required: true})}
+              {...register("petPicture", { required: true })}
               className="mt-1 w-full text-gray-700"
             />
             {errors.petPicture && (

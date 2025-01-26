@@ -1,10 +1,16 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
 
 
 const DonationForm = ({ register, handleSubmit, onSubmit, errors, user }) => {
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Helmet>
+        <title>
+      Donation Form
+        </title>
+      </Helmet>
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center">

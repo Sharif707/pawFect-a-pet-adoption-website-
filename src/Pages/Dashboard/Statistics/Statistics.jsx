@@ -2,6 +2,7 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { Helmet } from "react-helmet-async";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -33,6 +34,11 @@ const StatisticsPage = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      <Helmet>
+              <title>
+                Statistics
+              </title>
+            </Helmet>
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Statistics Dashboard</h1>
 
       {/* Top Stats Cards */}

@@ -9,15 +9,20 @@ import {
 } from "@tanstack/react-table";
 import { useQuery } from "@tanstack/react-query";
 
-import useAxiosSecure from "../../../../../Hooks/useAxiosSecure";
-import useAuth from "../../../../../Hooks/useAuth";
+
+
 import toast from "react-hot-toast";
-import DonatorsModal from "../../../../../Components/Modal/DonatorsModal";
+
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
+
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import DonatorsModal from "../../../../Components/Modal/DonatorsModal";
+import useAuth from "../../../../Hooks/useAuth";
+import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 import { Helmet } from "react-helmet-async";
 
-const DonationCampaigns = () => {
+
+const AllCampaigns = () => {
   const [selectedDonation, setSelectedDonation] = useState(null);
   const [showDonators, setShowDonators] = useState(false);
   const axiosSecure = useAxiosSecure();
@@ -25,21 +30,22 @@ const DonationCampaigns = () => {
   const navigate = useNavigate();
 
   const {
-    data: donations = [],
+    data: allDonations = [],
     isLoading,
     error,
     
     refetch,
   } = useQuery({
-    queryKey: ["myDonations", user?.email],
+    queryKey: ["alldonations"],
     queryFn: async () => {
-      const response = await axiosSecure.get(
-        `/my-donation-campaigns/${user?.email}`
+      const response = await axiosSecure(
+        `/all-donation-campaigns`
       );
+      console.log('all donation campaigns', response.data);
   
       return response.data;
     },
-    enabled: !!user?.email,
+  
   });
 
   const handlePauseToggle = async (donationId) => {
@@ -102,11 +108,6 @@ const DonationCampaigns = () => {
 
         return (
           <div className="flex justify-center gap-2">
-            <Helmet>
-        <title>
-          My Campaigns
-        </title>
-      </Helmet>
             <button
               onClick={() => handlePauseToggle(donation._id)}
               className="p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -139,7 +140,7 @@ const DonationCampaigns = () => {
   ];
 
   const table = useReactTable({
-    data: donations,
+    data: allDonations,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -160,9 +161,14 @@ const DonationCampaigns = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto bg-white rounded-lg shadow">
+      <Helmet>
+        <title>
+         All Donations
+        </title>
+      </Helmet>
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-6">My Donation Campaigns</h2>
-        {donations.length > 0 ? (
+        {allDonations.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -212,4 +218,4 @@ const DonationCampaigns = () => {
   );
 };
 
-export default DonationCampaigns;
+export default AllCampaigns;

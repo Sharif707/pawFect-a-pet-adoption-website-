@@ -1,6 +1,7 @@
 import useAuth from "../../../Hooks/useAuth";
 import LoadingSpinner from "../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 import useRole from "../../../Hooks/useRole";
+import { Helmet } from "react-helmet-async";
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -19,6 +20,11 @@ const ProfilePage = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl mx-auto">
+      <Helmet>
+        <title>
+         Profile Page
+        </title>
+      </Helmet>
       <div className="relative flex items-center space-x-6">
         {/* Profile Image */}
         <div className="relative">

@@ -15,6 +15,7 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 import { saveUser, uploadImageToImageBB } from "../../Utils/Utils";
+import { Helmet } from "react-helmet-async";
 
 const SignUp = () => {
   const {
@@ -74,6 +75,11 @@ const SignUp = () => {
 
   return (
     <div className="md:w-1/2 mx-auto bg-white flex flex-col justify-center items-center p-8">
+      <Helmet>
+        <title>
+          Sign Up
+        </title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-2">PawFect</h1>
       <p className="text-gray-600 mb-4">Start your journey</p>
       <h2 className="text-2xl font-semibold mb-6">Sign Up to PawFect</h2>

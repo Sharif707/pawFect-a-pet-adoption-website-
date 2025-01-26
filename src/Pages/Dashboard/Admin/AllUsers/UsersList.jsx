@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import useAuth from "../../../../Hooks/useAuth";
 import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const UsersList = () => {
   const { user } = useAuth();
@@ -47,6 +48,11 @@ const UsersList = () => {
   };
   return (
     <div>
+      <Helmet>
+        <title>
+          All Users List
+        </title>
+      </Helmet>
       <UsersTable usersList={usersList} handleCreateAdmin={handleCreateAdmin} />
     </div>
   );

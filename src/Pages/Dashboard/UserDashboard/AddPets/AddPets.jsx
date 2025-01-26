@@ -6,6 +6,7 @@ import { uploadImageToImageBB } from "../../../Utils/Utils";
 import axios from "axios";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const AddPetForm = () => {
   const {
@@ -66,6 +67,11 @@ const AddPetForm = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+      <Helmet>
+              <title>
+               Add Pet
+              </title>
+            </Helmet>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Add Your Pet</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>

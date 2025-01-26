@@ -7,10 +7,10 @@ const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="relative h-[600px] flex bg-gray-100">
+    <div className="relative min-h-screen flex bg-gray-100">
 
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-blue-800 transform ${
+        className={`fixed inset-y-0 h-fit left-0 z-50 w-64 bg-blue-800 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 md:relative`}
       >

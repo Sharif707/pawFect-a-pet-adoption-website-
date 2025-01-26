@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { uploadImageToImageBB } from "../../../Utils/Utils";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const UpdatePet = () => {
   const { id } = useParams();
@@ -82,6 +83,9 @@ const UpdatePet = () => {
   }
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow rounded-md">
+      <Helmet>
+        <title>Update Pet</title>
+      </Helmet>
       <h1 className="text-2xl font-bold text-center mb-6">Update Pet</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>

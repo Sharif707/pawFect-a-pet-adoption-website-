@@ -21,6 +21,7 @@ import AdminRoute from "./AdminRoute";
 import StatisticsPage from "../Pages/Dashboard/Statistics/Statistics";
 import ProfilePage from "../Pages/Dashboard/ProfilePage/ProfilePage";
 import AllPets from "../Pages/Dashboard/Admin/AllPets/AllPets";
+import AllCampaigns from "../Pages/Dashboard/Admin/AllCampaigns/AllCampaigns";
 
 const router = createBrowserRouter([
   {
@@ -148,6 +149,16 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <AllPets />,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/all-campaigns",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllCampaigns />,
             </AdminRoute>
           </PrivateRoute>
         ),

@@ -9,7 +9,9 @@ const MainLayout = () => {
       <nav>
         <Navbar />
       </nav>
-      <Outlet></Outlet>
+    <div className="my-8">
+    <Outlet></Outlet>
+    </div>
       <footer>
         <Footer />
       </footer>

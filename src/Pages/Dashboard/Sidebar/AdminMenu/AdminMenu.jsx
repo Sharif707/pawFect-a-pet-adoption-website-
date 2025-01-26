@@ -13,13 +13,20 @@ const AdminMenu = ({ isOpen }) => {
         <span className={`${isOpen ? "block" : "hidden"}`}>Add Pet</span>
       </NavLink>
       <NavLink
+        to="/dashboard/all-users"
+        className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
+      >
+        <FaPaw />
+        <span className={`${isOpen ? "block" : "hidden"}`}>All Users</span>
+      </NavLink>
+      <NavLink
         to="/dashboard/all-pets"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaPaw />
         <span className={`${isOpen ? "block" : "hidden"}`}>All Pets</span>
       </NavLink>
-     
+
       <NavLink
         to="/dashboard/donation"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
@@ -30,11 +37,13 @@ const AdminMenu = ({ isOpen }) => {
         </span>
       </NavLink>
       <NavLink
-        to="/dashboard/my-campaigns"
+        to="/dashboard/all-campaigns"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaDonate />
-        <span className={`${isOpen ? "block" : "hidden"}`}>My Campaigns</span>
+        <span className={`${isOpen ? "block" : "hidden"}`}>
+          All Donation Campaigns
+        </span>
       </NavLink>
       {/* <NavLink
         to="/dashboard/edited-donation"

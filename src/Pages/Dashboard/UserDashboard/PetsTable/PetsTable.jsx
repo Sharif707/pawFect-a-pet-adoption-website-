@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
+import { Helmet } from "react-helmet-async";
 
 const PetsTable = () => {
   const [pets, setPets] = useState([]);
@@ -23,11 +24,9 @@ const PetsTable = () => {
         const response = await axiosSecure(`/all-pets/${user?.email}`);
         console.log(response.data);
         setPets(response.data);
-        
       } catch (err) {
         console.error("Failed to fetch pets", err);
         setError(err);
-        
       }
       setLoading(false);
     };
@@ -51,12 +50,9 @@ const PetsTable = () => {
   const handleAdopt = async (id) => {
     console.log("adopted id", id);
     try {
-      await axiosSecure.patch(
-        `${import.meta.env.VITE_API_URL}/pet-info-update/${id}`,
-        {
-          isAdopted: true,
-        }
-      );
+      await axiosSecure.patch(`/pet-info-update/${id}`, {
+        isAdopted: true,
+      });
       setPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
@@ -68,7 +64,6 @@ const PetsTable = () => {
   };
 
   const handleDelete = async (id) => {
- 
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/delete-pets/${id}`);
       setPets((prevPets) => prevPets.filter((pet) => pet._id !== id));
@@ -133,7 +128,14 @@ const PetsTable = () => {
   ];
 
   if (loading) {
-    return <LoadingSpinner count={5} width={300} height={30} message="Loading data" />
+    return (
+      <LoadingSpinner
+        count={5}
+        width={300}
+        height={30}
+        message="Loading data"
+      />
+    );
   }
 
   if (error) {
@@ -142,6 +144,9 @@ const PetsTable = () => {
 
   return (
     <div className="px-4">
+      <Helmet>
+        <title>Your Pets</title>
+      </Helmet>
       <h1 className="text-2xl font-bold mb-4">Pets Table</h1>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
@@ -174,7 +179,6 @@ const PetsTable = () => {
         </tbody>
       </table>
 
-     
       {pets.length > 10 && (
         <div className="flex justify-end items-center gap-4 mt-4">
           <button

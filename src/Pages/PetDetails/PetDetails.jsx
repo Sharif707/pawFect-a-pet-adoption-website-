@@ -7,6 +7,7 @@ import { Button, Card, CardBody, CardHeader } from "@material-tailwind/react";
 import SubmitModal from "../../Components/SubmitModal/SubmitModal";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const PetDetails = () => {
   const { id } = useParams();
@@ -50,9 +51,8 @@ const PetDetails = () => {
     };
     console.log("updatedoc", updatedDoc);
     const { data } = axiosSecure.post("/adoption-requested-pets", updatedDoc);
-    if(data?.insertedId) {
-      
-    toast.success("successfully submitted")
+    if (data?.insertedId) {
+      toast.success("successfully submitted");
     }
     console.log("request status", data);
     toggleModal();
@@ -79,6 +79,9 @@ const PetDetails = () => {
   }
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Helmet>
+        <title>Pet Details</title>
+      </Helmet>
       <Card className="w-full max-w-3xl bg-white shadow-lg rounded-lg overflow-hidden">
         <CardHeader floated={false} className="relative">
           <img

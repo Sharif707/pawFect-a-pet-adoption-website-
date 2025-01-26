@@ -1,21 +1,15 @@
-
 import toast from "react-hot-toast";
 
 import { TbFidgetSpinner } from "react-icons/tb";
 import useAuth from "../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import {
-  FaFacebook,
-  FaGoogle,
-
-  FaEye,
-  FaEyeSlash,
-} from "react-icons/fa";
-
+import { FaFacebook, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
-  const {user, setUser, setError, error, loginUser, signInwithGoogle } = useAuth();
+  const { user, setUser, setError, error, loginUser, signInwithGoogle } =
+    useAuth();
   const {
     register,
     handleSubmit,
@@ -29,14 +23,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
     setLoading(true);
-  
+
     try {
       const { email, password } = data;
-    
 
-     await loginUser(email, password)
-   
-    
+      await loginUser(email, password);
+
       // setUser(user);
       // setError({});
       const userInfo = {
@@ -54,22 +46,25 @@ const Login = () => {
   };
 
   const handleGoogleSignIn = () => {
-   if(user?.email){
-    toast.error("You r already logged in")
-    return;
-   }
-   signInwithGoogle()
-   .then((user) => {
-     setUser(user);
-     setError({});
-   })
-   .catch((err) => {
-     setError({ ...err, registerError: err.message });
-   });
+    if (user?.email) {
+      toast.error("You r already logged in");
+      return;
+    }
+    signInwithGoogle()
+      .then((user) => {
+        setUser(user);
+        setError({});
+      })
+      .catch((err) => {
+        setError({ ...err, registerError: err.message });
+      });
   };
 
   return (
     <div className="md:w-1/2 mx-auto bg-white flex flex-col justify-center items-center p-8">
+      <Helmet>
+        <title>Sign In</title>
+      </Helmet>
       <h1 className="text-3xl font-bold mb-2">PawFect</h1>
       <p className="text-gray-600 mb-4">Start your journey</p>
       <h2 className="text-2xl font-semibold mb-6">Sign In to PawFect</h2>
@@ -78,8 +73,6 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-sm flex flex-col gap-4"
       >
-      
-
         {/* Email Input */}
         <div>
           <input
@@ -168,15 +161,17 @@ const Login = () => {
         <button className="bg-gray-100 p-3 rounded-full text-blue-600">
           <FaFacebook size={20} />
         </button>
-        <button onClick={handleGoogleSignIn} className="bg-gray-100 p-3 rounded-full text-red-500">
+        <button
+          onClick={handleGoogleSignIn}
+          className="bg-gray-100 p-3 rounded-full text-red-500"
+        >
           <FaGoogle size={20} />
         </button>
-      
       </div>
 
       {/* Login Link */}
       <p className="text-gray-600 mt-6">
-       Don't Have an account?{" "}
+        Don't Have an account?{" "}
         <a href="/login" className="text-blue-500 hover:underline">
           Register
         </a>

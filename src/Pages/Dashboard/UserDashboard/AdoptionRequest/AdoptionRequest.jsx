@@ -9,6 +9,7 @@ import axios from "axios";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
+import { Helmet } from "react-helmet-async";
 
 
 const AdoptionRequestTable = () => {
@@ -122,6 +123,11 @@ const AdoptionRequestTable = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      <Helmet>
+        <title>
+         Adoption Request
+        </title>
+      </Helmet>
       <h1 className="text-2xl font-bold text-center mb-4">Adoption Requests</h1>
       {loading ? (
         <LoadingSpinner

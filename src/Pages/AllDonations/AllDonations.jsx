@@ -4,6 +4,7 @@ import DonationCard from "../../Components/DonationCard/DonationCard";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSpinner from "../../Components/Shared/LoadingSpinner/LoadingSpinner";
+import { Helmet } from "react-helmet-async";
 
 const AllDonations = () => {
   const [inputValue, setInputValue] = useState("");
@@ -50,6 +51,11 @@ const AllDonations = () => {
 
   return (
     <div>
+      <Helmet>
+              <title>
+               All Donations
+              </title>
+            </Helmet>
       <div className="max-w-screen-xl mx-auto my-8 p-4">
         <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
           All Pet Campaigns Getting Funded
