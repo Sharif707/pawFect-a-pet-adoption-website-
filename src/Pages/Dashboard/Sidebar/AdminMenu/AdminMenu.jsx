@@ -6,28 +6,22 @@ const AdminMenu = ({ isOpen }) => {
   return (
     <div>
       <NavLink
-        to="/add-pet"
+        to="/dashboard/add-pets"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaPaw />
         <span className={`${isOpen ? "block" : "hidden"}`}>Add Pet</span>
       </NavLink>
       <NavLink
-        to="/my-added-pets"
+        to="/dashboard/all-pets"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaPaw />
-        <span className={`${isOpen ? "block" : "hidden"}`}>My Added Pets</span>
+        <span className={`${isOpen ? "block" : "hidden"}`}>All Pets</span>
       </NavLink>
+     
       <NavLink
-        to="/update-pet"
-        className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
-      >
-        <FaEdit />
-        <span className={`${isOpen ? "block" : "hidden"}`}>Update Pet</span>
-      </NavLink>
-      <NavLink
-        to="/create-donation-campaign"
+        to="/dashboard/donation"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaDonate />
@@ -36,19 +30,19 @@ const AdminMenu = ({ isOpen }) => {
         </span>
       </NavLink>
       <NavLink
-        to="/my-donation-campaigns"
+        to="/dashboard/my-campaigns"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaDonate />
         <span className={`${isOpen ? "block" : "hidden"}`}>My Campaigns</span>
       </NavLink>
-      <NavLink
-        to="/dashboard/add-pets"
+      {/* <NavLink
+        to="/dashboard/edited-donation"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaEdit />
         <span className={`${isOpen ? "block" : "hidden"}`}>Edit Donation</span>
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to="/my-donations"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
@@ -57,7 +51,7 @@ const AdminMenu = ({ isOpen }) => {
         <span className={`${isOpen ? "block" : "hidden"}`}>My Donations</span>
       </NavLink>
       <NavLink
-        to="/adoption-request"
+        to="/dashboard/adoption-request"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
       >
         <FaPaw />

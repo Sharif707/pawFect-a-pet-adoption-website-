@@ -20,6 +20,7 @@ import UsersList from "../Pages/Dashboard/Admin/AllUsers/UsersList";
 import AdminRoute from "./AdminRoute";
 import StatisticsPage from "../Pages/Dashboard/Statistics/Statistics";
 import ProfilePage from "../Pages/Dashboard/ProfilePage/ProfilePage";
+import AllPets from "../Pages/Dashboard/Admin/AllPets/AllPets";
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,16 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <AdminRoute>
               <UsersList />,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/all-pets",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <AllPets />,
             </AdminRoute>
           </PrivateRoute>
         ),

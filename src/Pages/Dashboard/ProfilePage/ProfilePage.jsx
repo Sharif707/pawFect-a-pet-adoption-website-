@@ -1,44 +1,60 @@
-import React from "react";
 import useAuth from "../../../Hooks/useAuth";
+import LoadingSpinner from "../../../Components/Shared/LoadingSpinner/LoadingSpinner";
+import useRole from "../../../Hooks/useRole";
 
 const ProfilePage = () => {
-  // Example user data
   const { user } = useAuth();
+  const [role, isLoading] = useRole();
+
+  if (isLoading) {
+    return (
+      <LoadingSpinner
+        count={5}
+        width={300}
+        height={30}
+        message="Loading data"
+      />
+    );
+  }
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl mx-auto">
-    
-      <div className="flex items-center space-x-6">
-        <img
-          referrerPolicy="no-referrer"
-          src={user.photoURL}
-          alt="Profile"
-          className="w-24 h-24 rounded-full border-2 border-blue-500"
-        />
+      <div className="relative flex items-center space-x-6">
+        {/* Profile Image */}
+        <div className="relative">
+          <img
+            referrerPolicy="no-referrer"
+            src={user.photoURL}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-2 border-blue-500"
+          />
+          {/* Role Badge */}
+          {role && (
+            <span className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+              {role.toUpperCase()}
+            </span>
+          )}
+        </div>
+
+        {/* User Details */}
         <div>
           <h1 className="text-2xl font-bold">{user.displayName}</h1>
           <p className="text-gray-600">{user.email}</p>
         </div>
       </div>
 
+      {/* About Section */}
       <div className="mt-6">
         <h2 className="text-lg font-semibold text-gray-700">About Me</h2>
         <p className="text-gray-600 mt-2">
-          Hi, I'm Muhammad Sharif, a passionate
-          MERN stack developer dedicated to building modern, efficient, and
-          user-friendly web applications. With expertise in MongoDB, Express.js,
-          React, and Node.js, I specialize in creating dynamic full-stack
-          applications that deliver seamless user experiences. I thrive on
-          solving complex problems, optimizing performance, and crafting clean,
-          maintainable code.
+          Hi, I'm Muhammad Sharif, a passionate MERN stack developer dedicated
+          to building modern, efficient, and user-friendly web applications.
+          With expertise in MongoDB, Express.js, React, and Node.js, I
+          specialize in creating dynamic full-stack applications that deliver
+          seamless user experiences. I thrive on solving complex problems,
+          optimizing performance, and crafting clean, maintainable code.
         </p>
       </div>
-
-      {/* Join Date */}
-      {/* <div className="mt-6">
-        <h2 className="text-lg font-semibold text-gray-700">Joined On</h2>
-        <p className="text-gray-600 mt-2">{user.joinDate}</p>
-      </div> */}
 
       {/* Action Buttons */}
       <div className="mt-6 flex space-x-4">
