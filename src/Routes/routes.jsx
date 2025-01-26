@@ -17,7 +17,9 @@ import PetListing from "../Pages/PetListing/PetListing";
 import PetDetails from "../Pages/PetDetails/PetDetails";
 import AdoptionRequestTable from "../Pages/Dashboard/UserDashboard/AdoptionRequest/AdoptionRequest";
 import UsersList from "../Pages/Dashboard/Admin/AllUsers/UsersList";
-
+import AdminRoute from "./AdminRoute";
+import StatisticsPage from "../Pages/Dashboard/Statistics/Statistics";
+import ProfilePage from "../Pages/Dashboard/ProfilePage/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -62,10 +64,21 @@ const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />,
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
+        element: (
+          <PrivateRoute>
+            <StatisticsPage />,
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/dashboard/add-pets",
         element: (
           <PrivateRoute>
@@ -97,7 +110,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      //
+
       {
         path: "/dashboard/my-campaigns",
         element: (
@@ -120,9 +133,22 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/all-users",
-        element: <UsersList/>,
-      }
-    
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <UsersList />,
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard/profile-page",
+        element: (
+          <PrivateRoute>
+            <ProfilePage />,
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);
