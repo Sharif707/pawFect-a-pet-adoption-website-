@@ -18,7 +18,7 @@ const AdoptionRequestTable = () => {
   const [error, setError] = useState(null);
   const { user } = useAuth();
   const userEmail = user?.email;
-  console.log("user email", userEmail);
+
   const axiosSecure = useAxiosSecure();
 
   const fetchAdoptionData = async () => {
@@ -29,7 +29,7 @@ const AdoptionRequestTable = () => {
       );
       setAdoptionData(data);
     } catch (error) {
-      console.error("Couldn't fetch adoption data", error);
+     
       setError("Failed to fetch adoption requests. Please try again later.");
     } finally {
       setLoading(false);

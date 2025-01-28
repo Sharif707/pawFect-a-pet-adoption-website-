@@ -26,7 +26,7 @@ const PetDetails = () => {
     queryKey: ["pet-details", id],
     queryFn: async () => {
       const { data } = await axiosSecure(`/pet-detaills/${id}`);
-      console.log("pet details", data);
+    
       return data;
     },
   });
@@ -49,12 +49,12 @@ const PetDetails = () => {
         image,
       },
     };
-    console.log("updatedoc", updatedDoc);
+    
     const { data } = axiosSecure.post("/adoption-requested-pets", updatedDoc);
     if (data?.insertedId) {
       toast.success("successfully submitted");
     }
-    console.log("request status", data);
+    
     toggleModal();
   };
 

@@ -41,7 +41,7 @@ const AllCampaigns = () => {
       const response = await axiosSecure(
         `/all-donation-campaigns`
       );
-      console.log('all donation campaigns', response.data);
+      
   
       return response.data;
     },

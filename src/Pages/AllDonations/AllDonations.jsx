@@ -21,7 +21,7 @@ const AllDonations = () => {
       const { data } = await axios.get(
         `${import.meta.env.VITE_API_URL}/all-donations?search=${search}&sort=${sortOption}`
       );
-      console.log("all donations", data);
+   
       return data;
     },
   });

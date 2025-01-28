@@ -1,10 +1,19 @@
 import React from "react";
-import { FaDonate, FaEdit, FaHeart, FaPaw } from "react-icons/fa";
+import { FaDonate,  FaHeart, FaHome, FaPaw } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const UserMenu = ({ isOpen }) => {
   return (
     <div>
+        <NavLink
+              to="/"
+              className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
+            >
+             <FaHome />
+              <span className={`${isOpen ? "block" : "hidden"}`}>
+               Back to Home
+              </span>
+            </NavLink>
       <NavLink
         to="/dashboard/add-pets"
         className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
@@ -67,6 +76,7 @@ const UserMenu = ({ isOpen }) => {
         <FaPaw />
         <span className={`${isOpen ? "block" : "hidden"}`}>user menu</span>
       </NavLink>
+      
     </div>
   );
 };

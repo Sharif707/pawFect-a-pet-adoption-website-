@@ -1,17 +1,18 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../Components/Shared/Navbar/Navbar";
+
 import Footer from "../Components/Shared/Footer/Footer";
+import Navbarr from "../Components/Shared/Navbar/Navbarr";
 
 const MainLayout = () => {
   return (
     <div className="bg-white">
       <nav>
-        <Navbar />
+        <Navbarr />
       </nav>
-    <div className="my-8">
-    <Outlet></Outlet>
-    </div>
+      <div>
+        <Outlet></Outlet>
+      </div>
       <footer>
         <Footer />
       </footer>

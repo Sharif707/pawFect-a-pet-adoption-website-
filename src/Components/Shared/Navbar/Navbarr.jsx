@@ -1,61 +1,74 @@
-import { useState } from "react";
-import { MdOutlineMenu } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-import NavSlider from "../../NavSlider/NavSlider";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+// import { FiSettings, FiUser } from "react-icons/fi";
 import useAuth from "../../../Hooks/useAuth";
 import { FaSignOutAlt } from "react-icons/fa";
+import NavSlider from "../../NavSlider/NavSlider";
+import { MdOutlineMenu } from "react-icons/md";
 import toast from "react-hot-toast";
+import websitelogo from "../../../assets/download.png"
+import petIcon from "../../../assets/peticon.png"
 
-const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const handleMenuToggle = () => {
-    setIsOpen(!isOpen);
-  };
+const Navbarr = () => {
   const { user, logOut } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
   const handleLogout = async () => {
     try {
       await logOut();
-  
+
       toast.success("logged out");
     } catch (error) {}
   };
+  const handleMenuToggle = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <div className="bg-[#fcfcfc] shadow text-[#0b0b0b] ">
-      {/* Desktop Navbar */}
-      <div className="hidden sm:flex justify-between items-center px-8 py-4">
+    <div>
+      <nav className="bg-gray-100 hidden shadow-md px-6 py-3 md:flex items-center justify-between">
         {/* Logo Section */}
-        <div>
+        <div className="flex items-center space-x-2">
+          
           <img
-            src="/src/assets/download.png"
-            alt="Logo"
-            className="w-20 h-auto"
-          />
+             src={websitelogo}
+             alt="Logo"
+             className="w-20 h-auto"
+           />
         </div>
 
-        {/* Navigation Menu */}
-        <div className="flex space-x-8">
-          <Link to="/" className="text-[#494949] px-4 py-2 font-bold">
+        {/* Navigation Links */}
+        <ul className="flex space-x-8 font-medium">
+          <Link className="hover:text-gray-800" to="/">
             Home
           </Link>
-          <Link to="#about" className="text-[#494949] px-4 py-2 font-bold">
+
+          <Link className="hover:text-gray-800" to="/all-pets">
             Pet Listing
           </Link>
-          <Link to={"/dashboard/donation"} className="text-[#494949] px-4 py-2 font-bold">
-            Donation Campaigns
-          </Link>
-        </div>
 
-        <div className="flex space-x-4">
+          <Link
+            className="hover:text-gray-800 focus:bg-gray-300"
+            to={"/dashboard/add-pets"}
+          >
+            Add a Pet
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className="px-3  rounded-md bg-gray-200 text-gray-800"
+          >
+            Dashboard
+          </Link>
+        </ul>
+
+        <div className="flex items-center space-x-4">
           {user?.email ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white font-bold rounded-full shadow-md hover:bg-blue-600 transition"
             >
-              <FaSignOutAlt />
-              <span>Logout</span>
+              <span>LOG OUT</span>
+              <FaSignOutAlt className="text-xl" />
             </button>
           ) : (
             <>
@@ -75,19 +88,15 @@ const Navbar = () => {
             </>
           )}
         </div>
-      </div>
-
-      {/* Mobile Navbar */}
-      <div className="sm:hidden flex justify-between items-center px-6 py-4">
-        {/* Logo Section */}
+      </nav>
+      <nav className="md:hidden flex justify-between items-center px-6 py-4">
         <div>
           <img
-            src="/src/assets/peticon.png"
+            src={petIcon}
             alt="Logo"
             className="w-12 h-auto"
           />
         </div>
-
         <div className="space-x-2 flex ">
           <Link className=" bg-[#eac435] text-[#333333] transition-colors hover:bg-[#eac445] py-2 px-5 rounded-lg font-bold text-lg uppercase">
             Donate
@@ -97,10 +106,10 @@ const Navbar = () => {
             onClick={handleMenuToggle}
           />
         </div>
-      </div>
+      </nav>
       <NavSlider isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
 
-export default Navbar;
+export default Navbarr;

@@ -17,6 +17,7 @@ const Sidebar = () => {
   };
 
   const [role, isLoading] = useRole();
+  console.log('role', role);
   const { logOut, user } = useAuth();
   const navigate = useNavigate();
 

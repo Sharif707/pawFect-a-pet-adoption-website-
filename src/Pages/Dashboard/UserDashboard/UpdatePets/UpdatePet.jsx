@@ -29,7 +29,7 @@ const UpdatePet = () => {
   const fetchPetData = async (id) => {
     const response = await axiosSecure(`/single-pet/${id}`);
 
-    console.log("response data", response);
+   
     return response.data;
   };
 
@@ -53,12 +53,12 @@ const UpdatePet = () => {
 
   // Handle form submission
   const onSubmit = async (formData) => {
-    console.log(formData);
+   
 
     const imageFile = formData.petImage[0];
 
     const imageURL = await uploadImageToImageBB(imageFile);
-    console.log("image url", imageURL);
+  
     const updatedPetsData = {
       ...formData,
       image: imageURL,

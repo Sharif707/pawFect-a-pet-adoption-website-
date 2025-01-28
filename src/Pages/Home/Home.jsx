@@ -1,15 +1,25 @@
 import Banner from "@/Components/Banner/Banner";
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import AboutUsSection from "../../Components/AboutUs/AboutUs";
+import AdoptionCTA from "../../Components/CallToAction/AdoptionCTA";
 
 const Home = () => {
   return (
-    <header>
+    <>
       <Helmet>
         <title>PawFect || Find Your Forever Friend.</title>
       </Helmet>
-      <Banner></Banner>
-    </header>
+      <section>
+        <Banner></Banner>
+      </section>
+      <section>
+        <AboutUsSection />
+      </section>
+      <section>
+        <AdoptionCTA />
+      </section>
+    </>
   );
 };
 

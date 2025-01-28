@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaPaw, FaEdit, FaHeart, FaDonate, FaBars } from "react-icons/fa";
+import { FaPaw, FaEdit, FaHeart, FaDonate, FaBars, FaHome } from "react-icons/fa";
 
 const AdminMenu = ({ isOpen }) => {
   return (
@@ -66,6 +66,15 @@ const AdminMenu = ({ isOpen }) => {
         <FaPaw />
         <span className={`${isOpen ? "block" : "hidden"}`}>
           Adoption Request
+        </span>
+      </NavLink>
+      <NavLink
+        to="/"
+        className="flex items-center gap-4 p-2 rounded-md hover:bg-blue-700"
+      >
+       <FaHome />
+        <span className={`${isOpen ? "block" : "hidden"}`}>
+         Back to Home
         </span>
       </NavLink>
       {/* <NavLink

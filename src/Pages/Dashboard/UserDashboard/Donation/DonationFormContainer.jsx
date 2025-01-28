@@ -17,17 +17,17 @@ const DonationFormContainer = () => {
   const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (donationdata) => {
-    console.log("donation data", donationdata);
+ 
     const imageFile = donationdata.petPicture[0]
     const imageURL = await uploadImageToImageBB(imageFile)
-    console.log("image url from donation form", imageURL);
+   
     const donationInfo = {
       ...donationdata,
       petPicture: undefined,
       petImage: imageURL,
       donationAmount: parseInt(donationdata?.donationAmount),
     };
-    console.log("donation info", donationInfo);
+  
     const { data } = await axiosSecure.post(
       `/donation-campaigns`,
       donationInfo

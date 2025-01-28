@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import Select from "react-select";
 import useAuth from "../../../../Hooks/useAuth";
 import { uploadImageToImageBB } from "../../../Utils/Utils";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { Helmet } from "react-helmet-async";
@@ -29,7 +29,7 @@ const AddPetForm = () => {
   const axiosSecure = useAxiosSecure();
   const handleChange = (selectedValue) =>
     setselectedCategory(selectedValue.value);
-  console.log(selectedCategory);
+
 
   const onSubmit = async (data) => {
     try {
@@ -41,7 +41,7 @@ const AddPetForm = () => {
       }
 
       const imageURL = await uploadImageToImageBB(imageFile);
-      console.log("Uploaded Image URL:", imageURL);
+   
 
       const petsData = {
         ...data,
@@ -58,7 +58,7 @@ const AddPetForm = () => {
       );
    
       if (response.data?.insertedId) {
-        toast.success("Your Pet has been added");
+        return toast.success("Your Pet has been added");
       }
     } catch (error) {
       console.error("Error submitting the form:", error);

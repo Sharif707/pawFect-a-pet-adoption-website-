@@ -30,7 +30,7 @@ const EditDonation = () => {
     queryKey: ["campaignsData", id],
     queryFn: async () => {
       const { data } = await axiosSecure(`/edit-donation/${id}`);
-      console.log(data);
+     
       return data;
     },
     enabled: !!id,
@@ -51,7 +51,7 @@ const EditDonation = () => {
   }, [campaignsData, setValue]);
 
   const onSubmit = async (donationdata) => {
-    console.log("all donation data", donationdata);
+
     const imageFile = donationdata.petPicture[0];
     const imageURL = await uploadImageToImageBB(imageFile);
     const updatedData = {
@@ -61,7 +61,7 @@ const EditDonation = () => {
       petPicture: undefined,
       petImage: imageURL,
     };
-    console.log(updatedData);
+ 
     const { data } = await axiosSecure.put(
       `/edited-donation/${id}`,
       updatedData

@@ -22,10 +22,10 @@ const PetsTable = () => {
       try {
         setLoading(true);
         const response = await axiosSecure(`/all-pets/${user?.email}`);
-        console.log(response.data);
+      
         setPets(response.data);
       } catch (err) {
-        console.error("Failed to fetch pets", err);
+        
         setError(err);
       }
       setLoading(false);
@@ -36,7 +36,7 @@ const PetsTable = () => {
 
   const totalPages = Math.ceil(pets.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  console.log(startIndex);
+ 
   const currentData = pets.slice(startIndex, startIndex + pageSize);
 
   const handleNextPage = () => {
@@ -48,7 +48,7 @@ const PetsTable = () => {
   };
 
   const handleAdopt = async (id) => {
-    console.log("adopted id", id);
+   
     try {
       await axiosSecure.patch(`/pet-info-update/${id}`, {
         isAdopted: true,
@@ -78,7 +78,7 @@ const PetsTable = () => {
     { header: "Category", accessorKey: "petCategory" },
     { header: "Age", accessorKey: "petAge" },
     { header: "Location", accessorKey: "petLocation" },
-    { header: "Short Description", accessorKey: "shortDescription" },
+  
     {
       header: "Image",
       accessorKey: "image",

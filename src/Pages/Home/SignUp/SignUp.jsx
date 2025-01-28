@@ -12,20 +12,21 @@ import toast from "react-hot-toast";
 
 import { TbFidgetSpinner } from "react-icons/tb";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { saveUser, uploadImageToImageBB } from "../../Utils/Utils";
 import { Helmet } from "react-helmet-async";
 
 const SignUp = () => {
   const {
-    setUser,
+  
     createUser,
     error,
     setError,
     signInwithGoogle,
     updateUserProfile,
   } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -41,7 +42,8 @@ const SignUp = () => {
     try {
       const { user } = await signInwithGoogle();
 
-      setUser(user);
+ 
+      navigate("/");
 
       setError({});
     } catch (error) {
@@ -54,19 +56,17 @@ const SignUp = () => {
     try {
       const { name, email, password } = data;
       const imageFile = data.image[0];
-      console.log(imageFile);
 
       const imageURL = await uploadImageToImageBB(imageFile);
 
       const { user } = await createUser(email, password);
       await updateUserProfile(name, imageURL);
 
-      setUser(user);
-
+      
       setError({});
       toast.success("Signed up successful");
+      navigate("/")
     } catch (error) {
-      console.error("Error occurred", error.message);
       setError({ ...error, registerError: error?.message });
     } finally {
       setLoading(false);
@@ -76,9 +76,7 @@ const SignUp = () => {
   return (
     <div className="md:w-1/2 mx-auto bg-white flex flex-col justify-center items-center p-8">
       <Helmet>
-        <title>
-          Sign Up
-        </title>
+        <title>Sign Up</title>
       </Helmet>
       <h1 className="text-3xl font-bold mb-2">PawFect</h1>
       <p className="text-gray-600 mb-4">Start your journey</p>

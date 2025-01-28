@@ -9,7 +9,7 @@ import { Helmet } from "react-helmet-async";
 
 const UsersList = () => {
   const { user } = useAuth();
-  console.log("user email", user?.email);
+
   const axiosSecure = useAxiosSecure();
 
   const {
@@ -21,7 +21,7 @@ const UsersList = () => {
     queryKey: ["usersList", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure(`/all-users/${user?.email}`);
-      console.log("all users data", data);
+
       return data;
     },
   });
@@ -36,7 +36,7 @@ const UsersList = () => {
     );
   }
   const handleCreateAdmin = async (email) => {
-    console.log("admin id", email);
+ 
     const { data } = await axiosSecure.patch(`/user/role/${email}`, {
       status: "Verified",
     });

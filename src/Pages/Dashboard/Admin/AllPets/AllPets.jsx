@@ -24,10 +24,10 @@ const AllPets = () => {
       try {
         setLoading(true);
         const response = await axiosSecure(`/dashboard/all-pets`);
-        console.log(response.data);
+     
         setallPets(response.data);
       } catch (err) {
-        console.error("Failed to fetch pets", err);
+        
         setError(err);
       }
       setLoading(false);
@@ -38,7 +38,7 @@ const AllPets = () => {
 
   const totalPages = Math.ceil(allpets.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
-  console.log(startIndex);
+  
   const currentData = allpets.slice(startIndex, startIndex + pageSize);
 
   const handleNextPage = () => {
@@ -50,12 +50,12 @@ const AllPets = () => {
   };
 
   const handleAdopt = async (id) => {
-    console.log("adopted id", id);
+   
     try {
       const { data } = await axiosSecure.patch(`/all-pets-info-update/${id}`, {
         isAdopted: true,
       });
-      console.log("adopted object", data);
+     
       setallPets((prevPets) =>
         prevPets.map((pet) =>
           pet._id === id ? { ...pet, isAdopted: true } : pet
@@ -71,7 +71,7 @@ const AllPets = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log("deleted id", id);
+   
     try {
       const { data } = await axiosSecure.delete(`/delete-all-pets/${id}`);
 
@@ -89,7 +89,7 @@ const AllPets = () => {
     { header: "Category", accessorKey: "petCategory" },
     { header: "Age", accessorKey: "petAge" },
     { header: "Location", accessorKey: "petLocation" },
-    { header: "Short Description", accessorKey: "shortDescription" },
+
     {
       header: "Image",
       accessorKey: "image",

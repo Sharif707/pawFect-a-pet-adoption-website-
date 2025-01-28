@@ -10,15 +10,17 @@ import {
   signOut,
 } from "firebase/auth";
 // import Loading from "../Components/Loading/Loading";
-import axios from "axios";
-import LoadingSpinner from "../Components/Shared/LoadingSpinner/LoadingSpinner";
-import { saveUser } from "../Pages/Utils/Utils";
 
-export const AuthContext = createContext(null);
+
+import { saveUser } from "../Pages/Utils/Utils";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+
+export  const AuthContext = createContext(null);
 const auth = getAuth(appInfo);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const axiosSecure = useAxiosSecure();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState({});
@@ -51,41 +53,41 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log("currentuser info", currentUser);
-      console.log("photourl", currentUser?.photoURL);
       if (currentUser?.email) {
         setUser(currentUser);
+
         if (currentUser?.displayName && currentUser?.photoURL) {
+
           const userInfo = {
-            name: currentUser?.displayName,
-            email: currentUser?.email,
-            image: currentUser?.photoURL,
+            name: currentUser.displayName,
+            email: currentUser.email,
+            image: currentUser.photoURL,
           };
-          console.log("userinfo", userInfo);
+          //please reload to see the magic either u won't see
           await saveUser(userInfo);
         }
-        // Get JWT token
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/jwt`,
-          {
-            email: currentUser?.email,
-          },
-          { withCredentials: true }
-        );
+
+        // const userDoc = { email: currentUser.email };
+        // console.log("User info:", userDoc);
+
+        // axiosSecure
+        //   .post(`/jwt`, userDoc)
+        //   .then((res) => {
+        //     if (res.data.token) {
+        //       localStorage.setItem("access-token", res.data.token);
+        //     }
+        //   })
+        //   .catch((err) => console.error("Error fetching token:", err));
       } else {
-        setUser(currentUser);
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-          withCredentials: true,
-        });
+        setUser(null);
+        // localStorage.removeItem("access-token");
       }
       setLoading(false);
     });
-    return () => {
-      return unsubscribe();
-    };
+
+    return () => unsubscribe();
   }, []);
 
   const AuthInfo = {
