@@ -33,13 +33,20 @@ const StatisticsPage = () => {
   };
 
   return (
+   <>
+   <nav className="hidden md:flex px-5 py-4 bg-gray-200">
+
+</nav>
     <div className="p-6 bg-gray-100 min-h-screen">
+      
       <Helmet>
               <title>
                 Statistics
               </title>
             </Helmet>
+            
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Statistics Dashboard</h1>
+      
 
       {/* Top Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -100,6 +107,7 @@ const StatisticsPage = () => {
         </table>
       </div>
     </div>
+   </>
   );
 };
 

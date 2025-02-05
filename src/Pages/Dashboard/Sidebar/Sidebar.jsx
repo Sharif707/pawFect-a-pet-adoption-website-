@@ -17,7 +17,7 @@ const Sidebar = () => {
   };
 
   const [role, isLoading] = useRole();
-  console.log('role', role);
+ 
   const { logOut, user } = useAuth();
   const navigate = useNavigate();
 
@@ -46,10 +46,10 @@ const Sidebar = () => {
       <div
         className={`${
           isOpen ? "w-64" : "w-16"
-        } bg-blue-800 h-screen transition-all duration-300 flex flex-col text-white relative`}
+        } bg-gray-200 text-black h-screen transition-all duration-300 flex flex-col  relative`}
       >
         <button
-          className="p-4 focus:outline-none text-white hover:bg-blue-700"
+          className="p-4 focus:outline-none text-[#424242]"
           onClick={toggleSidebar}
         >
           <FaBars size={20} />

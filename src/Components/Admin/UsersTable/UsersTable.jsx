@@ -16,8 +16,11 @@ import {
   IconButton,
   Tooltip,
 } from "@material-tailwind/react";
+import axios from "axios";
+import { useState } from "react";
 import { FaBan } from "react-icons/fa";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+
 
 const TABLE_HEAD = [
   "UserInfo",
@@ -27,55 +30,10 @@ const TABLE_HEAD = [
   "Actions",
 ];
 
-// const TABLE_ROWS = [
-//   {
-//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-//     name: "John Michael",
-//     email: "john@creative-tim.com",
-//     job: "Manager",
-//     org: "Organization",
-//     online: true,
-//     date: "23/04/18",
-//   },
-//   {
-//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-//     name: "Alexa Liras",
-//     email: "alexa@creative-tim.com",
-//     job: "Programator",
-//     org: "Developer",
-//     online: false,
-//     date: "23/04/18",
-//   },
-//   {
-//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-//     name: "Laurent Perrier",
-//     email: "laurent@creative-tim.com",
-//     job: "Executive",
-//     org: "Projects",
-//     online: false,
-//     date: "19/09/17",
-//   },
-//   {
-//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-//     name: "Michael Levi",
-//     email: "michael@creative-tim.com",
-//     job: "Programator",
-//     org: "Developer",
-//     online: true,
-//     date: "24/12/08",
-//   },
-//   {
-//     img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-//     name: "Richard Gran",
-//     email: "richard@creative-tim.com",
-//     job: "Manager",
-//     org: "Executive",
-//     online: false,
-//     date: "04/10/21",
-//   },
-// ];
 
-export function UsersTable({ usersList, handleCreateAdmin }) {
+export function UsersTable({ usersList, handleCreateAdmin, toggleBan }) {
+  
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -143,10 +101,14 @@ export function UsersTable({ usersList, handleCreateAdmin }) {
                 : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={name}>
+                <tr key={_id}>
                   <td className={classes}>
                     <div className="flex items-center gap-3">
-                      <Avatar referrerPolicy="no-refferer" src={image}  size="sm" />
+                      <Avatar
+                        referrerPolicy="no-refferer"
+                        src={image}
+                        size="sm"
+                      />
                       {/* <img referrerPolicy="no-referrer" src={image} alt="name" width="w-10" /> */}
                       <div className="flex flex-col">
                         <Typography
@@ -179,7 +141,6 @@ export function UsersTable({ usersList, handleCreateAdmin }) {
                       >
                         {role}
                       </Typography>
-                     
                     </div>
                   </td>
 
@@ -194,13 +155,16 @@ export function UsersTable({ usersList, handleCreateAdmin }) {
                   </td> */}
                   <td className={classes}>
                     <Tooltip content="Make Admin">
-                      <IconButton onClick={() => handleCreateAdmin(email)} variant="text">
+                      <IconButton
+                        onClick={() => handleCreateAdmin(email)}
+                        variant="text"
+                      >
                         <MdOutlineAdminPanelSettings className="text-lg" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip content="Block User">
                       <IconButton variant="text">
-                        <FaBan className="text-lg" />
+                        <FaBan onClick={() => toggleBan(email)} className="text-lg" />
                       </IconButton>
                     </Tooltip>
                   </td>
@@ -210,19 +174,6 @@ export function UsersTable({ usersList, handleCreateAdmin }) {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
-            Previous
-          </Button>
-          <Button variant="outlined" size="sm">
-            Next
-          </Button>
-        </div>
-      </CardFooter>
     </Card>
   );
 }

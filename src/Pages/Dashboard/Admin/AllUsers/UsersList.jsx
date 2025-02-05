@@ -6,6 +6,7 @@ import useAuth from "../../../../Hooks/useAuth";
 import LoadingSpinner from "../../../../Components/Shared/LoadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet-async";
+import axios from "axios";
 
 const UsersList = () => {
   const { user } = useAuth();
@@ -46,6 +47,19 @@ const UsersList = () => {
       return toast.success("Successfully updated");
     }
   };
+
+  const toggleBan = async(email) => {
+    console.log('banned email', email);
+  try {
+
+    const {data} = await axios.post(`${import.meta.env.VITE_API_URL}/toggle-ban/${email}`)
+    console.log('responsed data', data);
+    
+  } catch (error) {
+   
+    console.log('ban user error', error)
+  }
+  };
   return (
     <div>
       <Helmet>
@@ -53,7 +67,7 @@ const UsersList = () => {
           All Users List
         </title>
       </Helmet>
-      <UsersTable usersList={usersList} handleCreateAdmin={handleCreateAdmin} />
+      <UsersTable usersList={usersList} handleCreateAdmin={handleCreateAdmin} toggleBan={toggleBan} />
     </div>
   );
 };
